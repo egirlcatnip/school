@@ -12,16 +12,21 @@ void print_array(int a[], int a_len) {
   printf("\n");
 }
 
-void insertion_sort(int a[], int a_len) {
-  for (int j = 1; j < a_len; j++) {
-    int t = a[j];
-    int i = j - 1;
+void selection_sort(int a[], int a_len) {
+  for (int i = 0; i < a_len - 1; i++) {
+    int min = i;
+    int j = i + 1;
 
-    while (i >= 0 && a[i] > t) {
-      a[i + 1] = a[i];
-      i--;
+    while (j < a_len) {
+      if (a[j] < a[min]) {
+        min = j;
+      }
+      j++;
     }
-    a[i + 1] = t;
+
+    int tmp = a[i];
+    a[i] = a[min];
+    a[min] = tmp;
   }
 }
 
@@ -33,7 +38,7 @@ int main(void) {
   print_array(a, a_len);
   printf("\n");
 
-  insertion_sort(a, a_len);
+  selection_sort(a, a_len);
 
   printf("Sorted array:\n");
   print_array(a, a_len);
