@@ -1,0 +1,13 @@
+{
+  "AlignAfterOpenBracket": "BlockIndent",
+  "AllowShortFunctionsOnASingleLine": "Empty",
+  "BreakBeforeBraces": "Custom",
+  "ColumnLimit": 160,
+  "BraceWrapping": {
+    "AfterFunction": false,
+    "AfterControlStatement": false,
+    "AfterClass": false,
+    "AfterNamespace": false,
+    "BeforeElse": true
+  }
+}
