@@ -29,7 +29,7 @@ void search(char string1[], char string2[], int string1_len, int string2_len) {
   printf("Connects from end at index: -%i \n", connection_from_end);
 }
 
-int main() {
+int main(void) {
   char string1[] = "ahoj svete ahshoda na konci";
   char string2[] = "nci shoda na zacatku";
 

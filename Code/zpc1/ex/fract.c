@@ -157,7 +157,7 @@ void test_zero_denominator() {
   printf("Zero denominator test passed (commented out to avoid runtime error).\n");
 }
 
-int main() {
+int main(void) {
   test_fraction_operations();
   test_fraction_comparisons();
   test_fraction_simplification();

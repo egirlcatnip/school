@@ -210,7 +210,7 @@ void palindrome_range(int a, int b) {
   };
 };
 
-int main() {
+int main(void) {
   // convertFahrenheitToCelsius(120);
 
   // displayPiWithPrecision();

@@ -57,7 +57,7 @@ void difference(int i) {
   }
 }
 
-int main() {
+int main(void) {
   difference(9);
   return 0;
 }

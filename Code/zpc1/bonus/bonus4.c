@@ -87,7 +87,7 @@ int compute_sum(char src[], char result[], int n) {
   return 1;
 }
 
-int main() {
+int main(void) {
   char src[] = "1234 8766";
   // char src[] = "12340000000000000000000000000 87660000000000000000000000000"; // example of long input
   int result_len = 600; // Does not overflow

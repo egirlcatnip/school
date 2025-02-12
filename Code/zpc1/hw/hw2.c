@@ -1,19 +1,4 @@
-#include <assert.h>
 #include <stdio.h>
-
-void print_array(int a[], int a_len) {
-  printf("[");
-  for (int i = 0; i < a_len; i++) {
-    if (a[i] != 0) {
-      printf("%i", a[i]);
-
-      if (i < a_len - 1) {
-        printf(", ");
-      }
-    }
-  }
-  printf("]");
-}
 
 int int_to_bin(int num) {
   int binary = 0;
@@ -32,11 +17,10 @@ int int_to_bin(int num) {
 
 void print_encoded(int bin) {
   int value = 0;
-  int base = 1;
   while (bin > 0) {
     int digit = bin % 10;
     if (digit == 1) {
-      printf("%d ", value);
+      printf("%i ", value);
     }
     value++;
     bin = bin / 10;
@@ -53,14 +37,9 @@ int _log2(int n) {
 }
 
 void print_table(int size) {
-
-  int space = _log2(size);
-  // space = space > 7 ? space : 7;
-
-  printf("index");
-  // printf("%*c", space, ' ');
+  printf("index\t");
   printf(" | ");
-  printf(" bin ");
+  printf("bin     ");
   printf(" | ");
   printf("val");
   printf("\n");
@@ -68,11 +47,10 @@ void print_table(int size) {
   for (int i = 0; i <= size; i++) {
     int bin = int_to_bin(i);
 
-    printf("%*i", space, i);
+    printf("%i\t", i);
     printf(" | ");
-    printf("%0*d", space, bin);
+    printf("%0*d", 8, bin);
     printf(" | ");
-
     print_encoded(bin);
 
     printf("\n");
@@ -80,7 +58,8 @@ void print_table(int size) {
 }
 
 int main(void) {
-  print_table(31);
+  // This is only part of the finished hw2
+  print_table(15);
 
   return 0;
 }
@@ -89,15 +68,21 @@ int main(void) {
 
 // Expected output
 /*
-index | bin  | val
- 0    | 000  |
- 1    | 001  | 0
- 2    | 010  | 1
- 3    | 011  | 0 1
- 4    | 100  | 2
- 5    | 101  | 0 2
- 6    | 110  | 1 2
- 7    | 111  | 0 1 2
-
-
+index    | bin      | val
+0        | 00000000 |
+1        | 00000001 | 0
+2        | 00000010 | 1
+3        | 00000011 | 0 1
+4        | 00000100 | 2
+5        | 00000101 | 0 2
+6        | 00000110 | 1 2
+7        | 00000111 | 0 1 2
+8        | 00001000 | 3
+9        | 00001001 | 0 3
+10       | 00001010 | 1 3
+11       | 00001011 | 0 1 3
+12       | 00001100 | 2 3
+13       | 00001101 | 0 2 3
+14       | 00001110 | 1 2 3
+15       | 00001111 | 0 1 2 3
 */
