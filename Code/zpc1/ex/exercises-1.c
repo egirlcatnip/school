@@ -10,7 +10,7 @@ void convertFahrenheitToCelsius(float fahrenheit) {
   }
 }
 
-void printNumbersUpToTen() {
+void printNumbersUpToTen(void) {
   for (int n = 0; n <= 10; n++) {
     printf("%i\n", n);
   }
@@ -24,7 +24,7 @@ double calculatePiUsingLeibnizSeries(int precision) {
   return value * 4.0;
 }
 
-void displayPiWithPrecision() {
+void displayPiWithPrecision(void) {
   int precision = 10000000;
   float pi = calculatePiUsingLeibnizSeries(precision);
   printf("Pi with precision of %i:\n%.22f\n", precision, pi);
@@ -64,23 +64,30 @@ void printPyramidPattern(int rows) {
 }
 
 void euclid(int a, int b) {
+  int a_init = a;
+  int b_init = b;
   while (b) {
     int x = a;
     a = b;
     b = x % b;
   }
-  printf("Result: %i\n", a);
-};
+  printf("Euclid of %d and %d: %d\n", a_init, b_init, a);
+}
 
-int grade() {
-  int score;
-
-  printf("Enter your score (0-100): ");
+int grade(int score) {
 
   // Read the input
-  if (scanf("%d", &score) != 1) {
-    printf("Invalid input. Please enter an integer.\n");
-    return 1;
+
+  if (!score) {
+    printf("Enter your score (0-100): ");
+
+    if (scanf("%d", &score) != 1) {
+      printf("Invalid input. Please enter an integer.\n");
+      return 1;
+    }
+  }
+  else {
+    printf("Score is: %d\n", score);
   }
 
   // Check if the score is within the valid range
@@ -106,7 +113,7 @@ int grade() {
     printf("Your grade is: F\n");
   }
   return 1;
-};
+}
 
 void letter_count(int a, int b) {
   int result = b;
@@ -114,22 +121,22 @@ void letter_count(int a, int b) {
     printf("%i\n", result);
     result += b;
   }
-};
+}
 
 void power(int a, int b) {
-  printf("%i^%i\n", a, b);
+  printf("%i^%i is ", a, b);
   int result = 1;
 
   if (b == 0) {
-    printf("result is: 1\n");
+    printf("1\n");
   }
   else {
     for (int i = 0; i < b; i++) {
       result *= a;
     };
-    printf("result is: %i\n", result);
+    printf("%i\n", result);
   }
-};
+}
 
 void fib(int n) {
 
@@ -142,8 +149,8 @@ void fib(int n) {
     m = v;
     v = next;
   }
-  printf("result is: %i\n", v);
-};
+  printf("Fib no %d. is: %d\n", n, v);
+}
 
 // Returns 0 if not a palindrome, else returns n
 int palindrome(int n) {
@@ -196,43 +203,91 @@ int palindrome2(int n) {
   else {
     return 0;
   }
-};
+}
 
 void palindrome_range(int a, int b) {
-
   for (; a <= b; a++) {
-
-    // printf("Input: %i\n", a);
-
     if (palindrome2(a)) {
       printf("Palindrome: %i\n", a);
     }
   };
-};
+}
 
 int main(void) {
-  // convertFahrenheitToCelsius(120);
+  convertFahrenheitToCelsius(120);
 
-  // displayPiWithPrecision();
+  printf("\n");
 
-  // printIncreasingNumberTriangle(10);
+  displayPiWithPrecision();
 
-  // printPyramidPattern(4);
+  printf("\n");
 
-  // euclid(21, 24);
+  printIncreasingNumberTriangle(10);
 
-  // grade();
+  printf("\n");
 
-  // arrays
+  printPyramidPattern(4);
 
-  // nasobky(2, 8);
+  printf("\n");
 
-  // power(2, 8);
+  euclid(21, 24);
 
-  // fib(10);
+  printf("\n");
 
-  // palindrome(101);
+  grade(64);
 
-  palindrome_range(1, 100);
+  printf("\n");
+
+  power(2, 8);
+
+  printf("\n");
+
+  fib(10);
+
+  printf("\n");
+
+  palindrome(101);
+
+  printf("\n");
+
+  palindrome_range(10, 25);
   return 0;
 }
+
+// Konya
+
+/*
+120.00 Fahrenheit is 48.89 Celsius.
+
+Pi with precision of 10000000:
+3.1415927410125732421875
+
+1
+1 2
+1 2 3
+1 2 3 4
+1 2 3 4 5
+1 2 3 4 5 6
+1 2 3 4 5 6 7
+1 2 3 4 5 6 7 8
+1 2 3 4 5 6 7 8 9
+1 2 3 4 5 6 7 8 9 10
+
+   *
+  * *
+ * * *
+* * * *
+
+Euclid of 21 and 24: 3
+
+Score is: 64
+Your grade is: D
+
+2^8 is 256
+
+Fib no 10. is: 55
+
+
+Palindrome: 11
+Palindrome: 22
+*/

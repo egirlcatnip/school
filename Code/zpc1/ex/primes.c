@@ -44,12 +44,13 @@ int closest_prime_up(int i, int ir) {
     return current;
   }
   else {
-    printf("loop %i\n", ir);
     return closest_prime_up(i, ir + 1);
   }
 }
 
 void difference(int i) {
+  printf("Starting at: %d\n", i);
+
   int prime = closest_prime_up(i, 1);
 
   if (prime) {
@@ -58,12 +59,14 @@ void difference(int i) {
 }
 
 int main(void) {
-  difference(9);
+  difference(23782231);
   return 0;
 }
 
+// Konya
+
 /*
-Starting at: 9
-prime found: 11
-Difference: 2
+Starting at: 23782231
+Found prime: 23782249
+Difference is: 18
 */

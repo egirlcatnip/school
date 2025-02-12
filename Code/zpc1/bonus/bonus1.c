@@ -87,7 +87,6 @@ int main(void) {
 
 // Konya
 
-// Expected output
 /*
 String: "ahoj svete ah"
 Looking for: "ahojte"

@@ -103,7 +103,7 @@ fraction fraction_div(fraction f1, fraction f2) {
 }
 
 // Test functions
-void test_fraction_operations() {
+void test_fraction_operations(void) {
   fraction half = fraction_new(1, 2);
   fraction third = fraction_new(1, 3);
   fraction sum = fraction_add(half, half);
@@ -125,7 +125,7 @@ void test_fraction_operations() {
   printf("All basic arithmetic tests passed.\n");
 }
 
-void test_fraction_comparisons() {
+void test_fraction_comparisons(void) {
   fraction half = fraction_new(1, 2);
   fraction third = fraction_new(1, 3);
   fraction double_fraction = fraction_new(2, 1);
@@ -139,7 +139,7 @@ void test_fraction_comparisons() {
   printf("All comparison tests passed.\n");
 }
 
-void test_fraction_simplification() {
+void test_fraction_simplification(void) {
   fraction unsimplified = fraction_new(4, 8);
   fraction expected = fraction_new(1, 2);
   assert(fraction_equals(unsimplified, expected));
@@ -151,7 +151,7 @@ void test_fraction_simplification() {
   printf("All simplification tests passed.\n");
 }
 
-void test_zero_denominator() {
+void test_zero_denominator(void) {
   // This will cause an exit with an error
   // fraction_new(1, 0);
   printf("Zero denominator test passed (commented out to avoid runtime error).\n");
@@ -161,7 +161,16 @@ int main(void) {
   test_fraction_operations();
   test_fraction_comparisons();
   test_fraction_simplification();
-  test_zero_denominator(); // Uncomment to test error handling
+  // test_zero_denominator(); // Uncomment to test error handling
   printf("All tests completed successfully.\n");
   return 0;
 }
+
+// Konya
+
+/*
+All basic arithmetic tests passed.
+All comparison tests passed.
+All simplification tests passed.
+All tests completed successfully.
+*/

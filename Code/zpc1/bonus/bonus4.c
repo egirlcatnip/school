@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void split_two_numbers(char src[], int split, char num1[], char num2[]) {
+void split_two_numbers(char src[], char num1[], char num2[]) {
   int i = 0, j = 0;
   while (src[i] != ' ' && src[i] != '\0') {
     num1[i] = src[i];
@@ -71,7 +71,7 @@ int compute_sum(char src[], char result[], int n) {
   char num2[array_len];
   char sum[array_len];
 
-  split_two_numbers(src, array_len, num1, num2);
+  split_two_numbers(src, num1, num2);
 
   int sum_len = add_numbers(num1, num2, sum, n - 1);
 
@@ -110,7 +110,6 @@ int main(void) {
 
 // Konya
 
-// Expected Output
 /*
 Input : 1234 8766
 Sum   : 10000

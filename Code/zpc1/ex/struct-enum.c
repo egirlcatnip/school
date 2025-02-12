@@ -1,23 +1,23 @@
 #include <stdio.h>
 
-enum position { left, right, center };
+typedef enum { LEFT, RIGHT, CENTER } position;
 
 typedef struct {
   char full_name[255];
   int wage;
 } Person;
 
-void print_pos(enum position type) {
+void print_pos(position type) {
   switch (type) {
-  case left: {
+  case LEFT: {
     printf("Left\n");
     break;
   }
-  case right: {
+  case RIGHT: {
     printf("Right\n");
     break;
   }
-  case center: {
+  case CENTER: {
     printf("Center\n");
     break;
   }
@@ -38,9 +38,9 @@ void print_person(Person person) {
 
 int main(void) {
 
-  print_pos(left);
-  print_pos(center);
-  print_pos(right);
+  print_pos(LEFT);
+  print_pos(CENTER);
+  print_pos(RIGHT);
 
   Person person = {
       .full_name = "Tom Dom",
@@ -52,6 +52,11 @@ int main(void) {
   return 0;
 }
 
+// Konya
+
 /*
-//
+Left
+Center
+Right
+Person named Tom Dom is middle class
 */

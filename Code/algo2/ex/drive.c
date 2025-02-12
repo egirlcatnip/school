@@ -11,7 +11,6 @@ typedef struct {
   Unit unitType;
 } Drive;
 
-// Conversion functions
 static inline int byte_to_bit(int bytes) {
   return bytes * 8;
 }
@@ -20,24 +19,17 @@ static inline int bit_to_byte(int bits) {
   return bits / 8;
 }
 
-// Convert any memory value to bits for unified comparison.
-static inline int to_bits(int memory, Unit unit) {
+static inline int unified_unit(int memory, Unit unit) {
   return (unit == BYTE) ? byte_to_bit(memory) : memory;
 }
 
 // Printing functions
 void print_drive(const Drive *d) {
   printf("Drive %c:\n", d->name);
-  if (d->unitType == BIT) {
-    printf("  Used memory:      %d Bits (%d Bytes)\n", d->memoryUsed, bit_to_byte(d->memoryUsed));
-    printf("  Allocated memory: %d Bits (%d Bytes)\n", d->memoryAllocated, bit_to_byte(d->memoryAllocated));
-    printf("  Unit: Bits\n");
-  }
-  else { // BYTE
-    printf("  Used memory:      %d Bytes (%d Bits)\n", d->memoryUsed, byte_to_bit(d->memoryUsed));
-    printf("  Allocated memory: %d Bytes (%d Bits)\n", d->memoryAllocated, byte_to_bit(d->memoryAllocated));
-    printf("  Unit: Bytes\n");
-  }
+  printf("  Used memory:      %d Bits (%d Bytes)\n", d->memoryUsed, bit_to_byte(d->memoryUsed));
+  printf("  Allocated memory: %d Bits (%d Bytes)\n", d->memoryAllocated, bit_to_byte(d->memoryAllocated));
+  printf("  Unit: Bits\n");
+
   printf("\n");
 }
 
@@ -54,9 +46,9 @@ Drive *find_drive_with_max_memory(Drive drives[], int count) {
     exit(EXIT_FAILURE);
   }
   int maxIndex = 0;
-  int maxValue = to_bits(drives[0].memoryAllocated, drives[0].unitType);
+  int maxValue = unified_unit(drives[0].memoryAllocated, drives[0].unitType);
   for (int i = 1; i < count; i++) {
-    int current = to_bits(drives[i].memoryAllocated, drives[i].unitType);
+    int current = unified_unit(drives[i].memoryAllocated, drives[i].unitType);
     if (current > maxValue) {
       maxValue = current;
       maxIndex = i;
@@ -71,9 +63,9 @@ Drive *find_drive_with_max_available_memory(Drive drives[], int count) {
     exit(EXIT_FAILURE);
   }
   int maxIndex = 0;
-  int maxAvailable = to_bits(drives[0].memoryAllocated - drives[0].memoryUsed, drives[0].unitType);
+  int maxAvailable = unified_unit(drives[0].memoryAllocated - drives[0].memoryUsed, drives[0].unitType);
   for (int i = 1; i < count; i++) {
-    int available = to_bits(drives[i].memoryAllocated - drives[i].memoryUsed, drives[i].unitType);
+    int available = unified_unit(drives[i].memoryAllocated - drives[i].memoryUsed, drives[i].unitType);
     if (available > maxAvailable) {
       maxAvailable = available;
       maxIndex = i;
@@ -88,9 +80,9 @@ Drive *find_drive_with_min_memory(Drive drives[], int count) {
     exit(EXIT_FAILURE);
   }
   int minIndex = 0;
-  int minValue = to_bits(drives[0].memoryAllocated, drives[0].unitType);
+  int minValue = unified_unit(drives[0].memoryAllocated, drives[0].unitType);
   for (int i = 1; i < count; i++) {
-    int current = to_bits(drives[i].memoryAllocated, drives[i].unitType);
+    int current = unified_unit(drives[i].memoryAllocated, drives[i].unitType);
     if (current < minValue) {
       minValue = current;
       minIndex = i;
@@ -105,9 +97,9 @@ Drive *find_drive_with_min_available_memory(Drive drives[], int count) {
     exit(EXIT_FAILURE);
   }
   int minIndex = 0;
-  int minAvailable = to_bits(drives[0].memoryAllocated - drives[0].memoryUsed, drives[0].unitType);
+  int minAvailable = unified_unit(drives[0].memoryAllocated - drives[0].memoryUsed, drives[0].unitType);
   for (int i = 1; i < count; i++) {
-    int available = to_bits(drives[i].memoryAllocated - drives[i].memoryUsed, drives[i].unitType);
+    int available = unified_unit(drives[i].memoryAllocated - drives[i].memoryUsed, drives[i].unitType);
     if (available < minAvailable) {
       minAvailable = available;
       minIndex = i;
@@ -149,8 +141,8 @@ void decrease_allocated_memory(Drive drives[], int count, char name, int amount)
 void sort_drives(Drive drives[], int count, bool descending) {
   for (int i = 0; i < count - 1; i++) {
     for (int j = 0; j < count - i - 1; j++) {
-      int first = to_bits(drives[j].memoryAllocated, drives[j].unitType);
-      int second = to_bits(drives[j + 1].memoryAllocated, drives[j + 1].unitType);
+      int first = unified_unit(drives[j].memoryAllocated, drives[j].unitType);
+      int second = unified_unit(drives[j + 1].memoryAllocated, drives[j + 1].unitType);
       if ((descending && first < second) || (!descending && first > second)) {
         Drive temp = drives[j];
         drives[j] = drives[j + 1];
@@ -181,25 +173,28 @@ int main(void) {
   Drive drives[] = {A, B, C, D, E};
   int driveCount = sizeof(drives) / sizeof(drives[0]);
 
+  /*
   printf("=== All Drives ===\n");
   print_all_drives(drives, driveCount);
-
-  // Sorting drives by allocated memory (largest first)
-  printf("=== Drives Sorted by Allocated Memory (>) ===\n");
+  */
+  printf("=== Drives Sorted by Allocated Memory ===\n");
   sort_drives(drives, driveCount, true);
   print_all_drives(drives, driveCount);
 
-  // Find and print the drive with the maximum allocated memory.
-  Drive *maxDrive = find_drive_with_max_memory(drives, driveCount);
+  printf("\n");
+
   printf("=== Drive with Maximum Allocated Memory ===\n");
+  Drive *maxDrive = find_drive_with_max_memory(drives, driveCount);
   print_drive(maxDrive);
 
-  // Find and print the drive with the maximum available memory.
-  Drive *maxAvailableDrive = find_drive_with_max_available_memory(drives, driveCount);
+  printf("\n");
+
   printf("=== Drive with Maximum Available Memory ===\n");
+  Drive *maxAvailableDrive = find_drive_with_max_available_memory(drives, driveCount);
   print_drive(maxAvailableDrive);
 
-  // Example: Get the 2nd biggest drive.
+  printf("\n");
+
   int nth = 2;
   Drive *nthDrive = nth_biggest(drives, driveCount, nth);
   printf("=== The %d. Biggest Drive by allocated memory ===\n", nth);

@@ -202,3 +202,29 @@ int main(void) {
 
   return 0;
 }
+
+// Konya
+
+/*
+Matrix:
+1  1  0  0
+0  1  1  0
+0  0  1  1
+0  0  0  1
+
+The matrix is not equivalent.
+The matrix is reflexive.
+The matrix is not symetric.
+The matrix is not transitive.
+
+Updated with transitive closure:
+1  1  1  1
+0  1  1  1
+0  0  1  1
+0  0  0  1
+
+The matrix is not equivalent.
+The matrix is reflexive.
+The matrix is not symetric.
+The matrix is transitive.
+*/

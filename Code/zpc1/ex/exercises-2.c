@@ -55,6 +55,7 @@ int main(void) {
 }
 
 // Konya
+
 /*
 String: "ahoj svete ahshoda na konci"
 Looking for: "nci shoda na zacatku"
