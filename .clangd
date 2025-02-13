@@ -1,0 +1,12 @@
+{
+  "CompileFlags": {
+    "Add": [
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wno-format",
+      "-Wno-format-pedantic",
+      "-std=c23",
+    ]
+  }
+}
