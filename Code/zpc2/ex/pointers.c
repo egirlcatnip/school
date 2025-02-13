@@ -25,7 +25,7 @@ int main(void) {
   printf("Pointers:\n");
   printf("Pointer of x(%d) is %p\n", x, ptr_x); // Different pointer addresses
   printf("Pointer of y(%d) is %p\n", y, ptr_y); // same values
-  printf("Deref of x(%d) is %d\n", x, *ptr_x);
+  printf("Deref of x(%d)   is %d\n", x, *ptr_x);
 
   printf("\n");
 
