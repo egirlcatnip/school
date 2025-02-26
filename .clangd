@@ -6,7 +6,9 @@
       "-Wpedantic",
       "-Wno-format",
       "-Wno-format-pedantic",
-      "-Wno-empty-translation-unit",
+      "-Wno--Wempty-translation-unit",
+      "-Wno-newline-eof",
+      "-Wno-unused-parameter",
       "-std=c23",
     ]
   }

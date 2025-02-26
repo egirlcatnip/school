@@ -1,7 +1,0 @@
-{
-  "CompileFlags": {
-    "Remove": [
-      "-std=c23"
-    ]
-  }
-}
