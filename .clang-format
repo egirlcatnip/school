@@ -1,3 +1,15 @@
 {
   "BasedOnStyle": "Google",
+  "IndentWidth": 2,
+  "UseTab": Never,
+  "AllowShortIfStatementsOnASingleLine": false,
+  "AllowShortLoopsOnASingleLine": false,
+  "AllowShortFunctionsOnASingleLine": None,
+  "AllowShortCaseLabelsOnASingleLine": false,
+
+  "BreakBeforeBraces": Custom,
+
+  "BraceWrapping": {
+    "BeforeElse": true,
+  },
 }
