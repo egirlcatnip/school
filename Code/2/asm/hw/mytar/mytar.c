@@ -16,36 +16,33 @@ void usage(void) {
   printf("Usage:\n");
   printf("\tmytar --list <tar>\n");
   printf("\tmytar -l <tar>\n");
-  printf("\tmytar --cat <tar> <filename> [<filename> ...]\n");
-  printf("\tmytar -x <tar> <filename> [<filename> ...]\n");
+  printf("\tmytar --cat <tar> [<filename> ...]\n");
+  printf("\tmytar -x <tar> [<filename> ...]\n");
 }
 
-int list_files(FILE *tar_file) {
+int list_files(FILE* tar_file) {
   char header[TAR_BLOCK_SIZE];
-  char file_name[FILE_NAME_SIZE + 1];  // Extra byte for null terminator
+  char file_name[FILE_NAME_SIZE + 1];
 
+  // List all files in the tar_file
   while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
-    // If empty - end of archive.
-    if (header[0] == '\0') {
+    // If "\0" -  end of tar
+    if (header[0] == '\0')
       break;
-    }
 
-    // Extract filename (first 100 bytes) and ensure null-termination
-    memcpy(file_name, header, FILE_NAME_SIZE);
-    file_name[FILE_NAME_SIZE] = '\0';
-
-    // Print file name
-    printf("%s\n", file_name);
-
-    // Get file size from header (stored as octal)
+    // Get file size from header (OCT)
     long file_size = strtol(&header[124], NULL, 8);
 
-    // Calculate padding to maintain TAR block alignment
+    // Extract file_name (first 100B)
+    memcpy(file_name, header, FILE_NAME_SIZE);
+    file_name[FILE_NAME_SIZE] = '\0';
+    printf("%s\n", file_name);
+
+    // Padding - file_size + padding = 512B
     long padding;
     if (file_size % TAR_BLOCK_SIZE) {
       padding = TAR_BLOCK_SIZE - (file_size % TAR_BLOCK_SIZE);
-    }
-    else {
+    } else {
       padding = 0;
     }
 
@@ -53,104 +50,157 @@ int list_files(FILE *tar_file) {
     fseek(tar_file, file_size + padding, SEEK_CUR);
   }
 
-  fclose(tar_file);
   return EXIT_SUCCESS;
 }
 
-int cat_files(FILE *tar_file, int file_count, char *contained_files[]) {
+int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
   char header[TAR_BLOCK_SIZE];
-  char file_name[FILE_NAME_SIZE + 1];  // Null-terminated filename
-  bool found = false;
+  char file_name[FILE_NAME_SIZE + 1];
+  bool file_found = false;
+  bool all_files_found = true;
 
-  for (int i = 0; i < file_count; i++) {
-    rewind(tar_file);
-    found = false;
-
+  if (!requested_count) {
+    // Cat all files in the tar_file
     while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
-      // If empty - end of archive.
-      if (header[0] == '\0') {
+      // If "\0" - end of tar
+      if (header[0] == '\0')
         break;
+
+      // Get file size from header (OCT)
+      long file_size = strtol(&header[124], NULL, 8);
+
+      char* content = malloc(file_size + 1);
+      if (!content) {
+        fprintf(stderr, "Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
       }
 
-      // Extract filename
+      /*
+      // Extract file_name (first 100B)
       memcpy(file_name, header, FILE_NAME_SIZE);
       file_name[FILE_NAME_SIZE] = '\0';
+      printf("%s: ", file_name);
+      */
 
-      // Compare with the requested filename
-      if (!strcmp(file_name, contained_files[i])) {
-        long packed_size = strtol(&header[124], NULL, 8);
+      // Read contents into buffer
+      fread(content, 1, file_size, tar_file);
+      content[file_size - 1] = '\0';
+      printf("%s\n", content);
 
-        // Allocate memory for file content
-        char *content =
-            malloc(packed_size + 1);  // Extra byte for null terminator
-        if (!content) {
-          fprintf(stderr, "Memory allocation failed.\n");
-          exit(EXIT_FAILURE);
-        }
+      free(content);
 
-        // Read file contents into buffer
-        fread(content, 1, packed_size, tar_file);
-        content[packed_size - 1] = '\0';  // Null-terminate without nenwline
-
-        // Print file contents
-        printf("%s\n", content);
-
-        free(content);
-        found = true;
-        break;
-      }
-
-      // Get file size and calculate padding
-      long file_size = strtol(&header[124], NULL, 8);
+      // Padding - file_size + padding = 512B
       long padding;
-
       if (file_size % TAR_BLOCK_SIZE) {
         padding = TAR_BLOCK_SIZE - (file_size % TAR_BLOCK_SIZE);
-      }
-      else {
+      } else {
         padding = 0;
       }
 
       // Skip to next block (every 512B)
-      fseek(tar_file, file_size + padding, SEEK_CUR);
-    }
-
-    if (!found) {
-      printf("File not found: `%s`\n", contained_files[i]);
+      fseek(tar_file, padding, SEEK_CUR);
     }
   }
 
-  fclose(tar_file);
+  else {
+    // Cat specific files
+    for (int i = 0; i < requested_count; i++) {
+      rewind(tar_file);
+      file_found = false;
 
-  if (!found) {
+      while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
+        // If empty - end of archive.
+        if (header[0] == '\0')
+          break;
+
+        // Extract file_name (first 100B)
+        memcpy(file_name, header, FILE_NAME_SIZE);
+        file_name[FILE_NAME_SIZE] = '\0';
+
+        // Compare with the requested filename
+        if (!strcmp(file_name, requested_files[i])) {
+          long file_size = strtol(&header[124], NULL, 8);
+
+          char* content = malloc(file_size + 1);
+          if (!content) {
+            fprintf(stderr, "Memory allocation failed.\n");
+            exit(EXIT_FAILURE);
+          }
+
+          /*
+          // Print file_name disabled by default
+          printf("%s: ", file_name);
+          */
+
+          // Read contents into the buffer
+          fread(content, 1, file_size, tar_file);
+          content[file_size - 1] = '\0';
+          printf("%s\n", content);
+
+          free(content);
+
+          file_found = true;
+
+          break;
+        }
+
+        // Get file size from header (OCT)
+        long file_size = strtol(&header[124], NULL, 8);
+
+        // Padding - file_size + padding = 512B
+        long padding;
+        if (file_size % TAR_BLOCK_SIZE != 0) {
+          padding = TAR_BLOCK_SIZE - (file_size % TAR_BLOCK_SIZE);
+        } else {
+          padding = 0;
+        }
+
+        // Skip to next block (every 512B)
+        fseek(tar_file, file_size + padding, SEEK_CUR);
+      }
+
+      if (!file_found) {
+        printf("File not found: `%s`\n", requested_files[i]);
+        all_files_found = false;
+      }
+    }
+  }
+
+  if (!all_files_found) {
     return EXIT_FAILURE;
   }
 
   return EXIT_SUCCESS;
 }
 
-int main(int argc, char *argv[]) {
-  char *tar_name = NULL;
-  FILE *tar = NULL;
+int main(int argc, char* argv[]) {
+  char* tar_name = NULL;
+  FILE* tar = NULL;
   OPERATION operation = INVALID;
 
   if (argc == 1) {
     usage();
-    exit(EXIT_SUCCESS);
+    return EXIT_SUCCESS;
   }
+
+  // Get operation
   else if (argc == 3 &&
-           (!strcmp(argv[1], "--list") || !strcmp(argv[1], "-l"))) {
+           (!strcmp(argv[1], "-l") || (!strcmp(argv[1], "--list")))) {
     operation = LIST;
     tar_name = argv[2];
   }
-  else if (argc >= 4 && (!strcmp(argv[1], "--cat") || !strcmp(argv[1], "-x"))) {
+
+  else if (argc >= 3 &&
+           (!strcmp(argv[1], "-x") || (!strcmp(argv[1], "--cat")))) {
     operation = CAT;
     tar_name = argv[2];
   }
+
   else {
     operation = INVALID;
   }
 
+  // Perform operation
   switch (operation) {
     case INVALID: {
       printf("Invalid syntax\n");
@@ -161,33 +211,41 @@ int main(int argc, char *argv[]) {
     case LIST: {
       tar = fopen(tar_name, "rb");
       if (!tar) {
-        fprintf(stderr, "Unable to open file `%s`.\n\n", tar_name);
+        fprintf(stderr, "Invalid tar file name.\n");
         usage();
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
       }
 
       if (list_files(tar)) {
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
       };
+
+      fclose(tar);
       break;
     }
 
     case CAT: {
       tar = fopen(tar_name, "rb");
       if (!tar) {
+        fclose(tar);
         fprintf(stderr, "Unable to open `%s`.\n\n", tar_name);
         usage();
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
       }
 
-      if (cat_files(tar, argc - 3, &argv[3])) {
-        exit(EXIT_FAILURE);
+      int file_count = argc - 3;
+      char** files = &argv[3];
+
+      if (cat_files(tar, file_count, files)) {
+        return EXIT_FAILURE;
       };
+
+      fclose(tar);
       break;
     }
   }
 
-  exit(EXIT_SUCCESS);
+  return EXIT_SUCCESS;
 }
 
 // Konya
@@ -199,12 +257,17 @@ int main(int argc, char *argv[]) {
 Usage:
         mytar --list <tar>
         mytar -l <tar>
-        mytar --cat <tar> <filename> [<filename> ...]
-        mytar -x <tar> <filename> [<filename> ...]
+        mytar --cat <tar> [<filename> ...]
+        mytar -x <tar> [<filename> ...]
 
 ➜ mytar -l foo.tar
 baz.dat
 bar.dat
+
+➜ mytar -x foo.tar
+Test 1 2 3
+Test 4 5 6
+Test 7 8 9
 
 ➜ mytar -x foo.tar bar.dat baz.dat
 Test 1 2 3

@@ -10,8 +10,8 @@ vypíše nápovedu
 Usage:
         mytar --list <tar>
         mytar -l <tar>
-        mytar --cat <tar> <filename> [<filename> ...]
-        mytar -x <tar> <filename> [<filename> ...]
+        mytar --cat <tar> [<filename> ...]
+        mytar -x <tar> [<filename> ...]
 ```
 
 ---
@@ -21,7 +21,7 @@ vypíše obsah tar súboru
 
 ```
 ➜ mytar --list <tar>
-alebo
+
 ➜ mytar -l <tar>
 ```
 
@@ -33,7 +33,7 @@ vypíše obsah súboru/súborov z tar súboru
 
 ```
 ➜ mytar --cat <tar> <filename> [<filename> ...]
-alebo
+
 ➜ mytar -x <tar> <filename> [<filename> ...]
  ```
 
@@ -53,9 +53,10 @@ true, false
 `stdio.h`:
 
 ```
-printf()
+printf(), fprintf()
 fopen(), fclose()
 fread(), fseek(), rewind()
+NULL
 ```
 
 ---
@@ -72,7 +73,7 @@ exit(), EXIT_SUCCESS, EXIT_FAILURE
 `string.h`:
 
 ```
-strcmp()
+strcmp(), memcpy()
 ```
 
 ## Control flow
@@ -107,6 +108,14 @@ vypíše nápovedu
 
 ---
 
+`return podľa úspešnosti operácie`
+```
+EXIT_SUCCESS -> úspešné ukončenie
+EXIT_FAILURE -> chyba pri operácii
+```
+
+---
+
 ## Funkcie
 
 `list_files()`:
@@ -117,19 +126,18 @@ vypíše názov súboru
 skočí na začiatok ďalšieho súboru
 opakuje pre všetky súbory
 zatvorí súbor
-ak nedošlo k chybe, return EXIT_SUCCESS
 ```
 
 `cat_files()`:
 ```
 otvorí súbor
 čita `tar_file` po 512B
-ak je súbor v argumentoch, vypíše obsah
+ak niesu špecifikované súbory, vypíše obsah všetkých súborov
+inak vypíše obsah špecifikovaných súborov
 skočí na začiatok ďalšieho súboru
 opakuje pre všetky súbory
 ak súbor nebol nájdený, vypíše chybu
 zatvorí súbor
-ak nedošlo k chybe, return EXIT_SUCCESS
 ```
 
 `usage()`:
@@ -139,8 +147,8 @@ vypíše nápovedu:
 Usage:
         mytar --list <tar>
         mytar -l <tar>
-        mytar --cat <tar> <filename> [<filename> ...]
-        mytar -x <tar> <filename> [<filename> ...]
+        mytar --cat <tar> [<filename> ...]
+        mytar -x <tar> [<filename> ...]
 
 ```
 
