@@ -1,6 +1,6 @@
 # Dokumentácia k `mytar`
 
-# 1. Použitie
+# Použitie
 
 ### `mytar` bez argumentov
 vypíše nápovedu
@@ -37,9 +37,7 @@ vypíše obsah súboru/súborov z tar súboru
 ➜ mytar -x <tar> <filename> [<filename> ...]
  ```
 
----
-
-# 2. Implementácia
+# Implementácia
 
 ## Použité knižnice
 `stdbool.h`:
@@ -143,13 +141,19 @@ zatvorí súbor
 `usage()`:
 ```
 vypíše nápovedu:
-
+```
+```
 Usage:
         mytar --list <tar>
         mytar -l <tar>
         mytar --cat <tar> [<filename> ...]
         mytar -x <tar> [<filename> ...]
+```
 
+# makefile
+```
+preloží mytar zo zdroja
+vytvorí .tar súbor obsahuji 1.dat 2.dat 3.dat
 ```
 
 #

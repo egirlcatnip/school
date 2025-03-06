@@ -20,12 +20,12 @@ void usage(void) {
   printf("\tmytar -x <tar> [<filename> ...]\n");
 }
 
-int list_files(FILE* tar_file) {
+int list_files(FILE* tar_archive) {
   char header[TAR_BLOCK_SIZE];
   char file_name[FILE_NAME_SIZE + 1];
 
   // List all files in the tar_file
-  while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
+  while (fread(header, 1, TAR_BLOCK_SIZE, tar_archive) == TAR_BLOCK_SIZE) {
     // If "\0" -  end of tar
     if (header[0] == '\0')
       break;
@@ -47,13 +47,13 @@ int list_files(FILE* tar_file) {
     }
 
     // Skip to next block (every 512B)
-    fseek(tar_file, file_size + padding, SEEK_CUR);
+    fseek(tar_archive, file_size + padding, SEEK_CUR);
   }
 
   return EXIT_SUCCESS;
 }
 
-int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
+int cat_files(FILE* tar_archive, int requested_count, char* requested_files[]) {
   char header[TAR_BLOCK_SIZE];
   char file_name[FILE_NAME_SIZE + 1];
   bool file_found = false;
@@ -61,7 +61,7 @@ int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
 
   if (!requested_count) {
     // Cat all files in the tar_file
-    while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
+    while (fread(header, 1, TAR_BLOCK_SIZE, tar_archive) == TAR_BLOCK_SIZE) {
       // If "\0" - end of tar
       if (header[0] == '\0')
         break;
@@ -83,7 +83,7 @@ int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
       */
 
       // Read contents into buffer
-      fread(content, 1, file_size, tar_file);
+      fread(content, 1, file_size, tar_archive);
       content[file_size - 1] = '\0';
       printf("%s\n", content);
 
@@ -98,17 +98,17 @@ int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
       }
 
       // Skip to next block (every 512B)
-      fseek(tar_file, padding, SEEK_CUR);
+      fseek(tar_archive, padding, SEEK_CUR);
     }
   }
 
   else {
     // Cat specific files
     for (int i = 0; i < requested_count; i++) {
-      rewind(tar_file);
+      rewind(tar_archive);
       file_found = false;
 
-      while (fread(header, 1, TAR_BLOCK_SIZE, tar_file) == TAR_BLOCK_SIZE) {
+      while (fread(header, 1, TAR_BLOCK_SIZE, tar_archive) == TAR_BLOCK_SIZE) {
         // If empty - end of archive.
         if (header[0] == '\0')
           break;
@@ -133,7 +133,7 @@ int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
           */
 
           // Read contents into the buffer
-          fread(content, 1, file_size, tar_file);
+          fread(content, 1, file_size, tar_archive);
           content[file_size - 1] = '\0';
           printf("%s\n", content);
 
@@ -156,7 +156,7 @@ int cat_files(FILE* tar_file, int requested_count, char* requested_files[]) {
         }
 
         // Skip to next block (every 512B)
-        fseek(tar_file, file_size + padding, SEEK_CUR);
+        fseek(tar_archive, file_size + padding, SEEK_CUR);
       }
 
       if (!file_found) {
@@ -227,7 +227,6 @@ int main(int argc, char* argv[]) {
     case CAT: {
       tar = fopen(tar_name, "rb");
       if (!tar) {
-        fclose(tar);
         fprintf(stderr, "Unable to open `%s`.\n\n", tar_name);
         usage();
         return EXIT_FAILURE;
@@ -273,8 +272,8 @@ Test 7 8 9
 Test 1 2 3
 Test 4 5 6
 
-➜ mytar -l invalid_tar_file
-Unable to open file `invalid_tar_file`.
+➜ mytar -l invalid_tar_archive
+Unable to open file `invalid_tar_archive`.
 
 ➜ mytar invalid_syntax
 Invalid syntax

@@ -9,7 +9,6 @@
       "-Wno--Wempty-translation-unit",
       "-Wno-newline-eof",
       "-Wno-unused-parameter",
-      "-std=c23",
     ]
   }
 }
