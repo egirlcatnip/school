@@ -47,11 +47,11 @@ Square root of Matrix 1:
 ```
 
 
-# time measurement
+# Meranie času
 
-## taken on a 10000x10000 matrix of floats
+## na poli 1000x1000
 
-## `time ./test.out` with `-O0` flag
+## `time ./test.out` s `-O0`
 ```
 ➜ make O0
 
@@ -62,7 +62,7 @@ user	0m6.687s
 sys 	0m0.015s
 ```
 
-## `time ./test.out` with `-O1` flag
+## `time ./test.out` s `-O1`
 ```
 ➜ make O1
 
@@ -73,7 +73,7 @@ user	0m0.950s
 sys	  0m0.011s
 ```
 
-## `time ./test.out` with `-O2` flag
+## `time ./test.out` with `-O2`
 ```
 ➜ make O2
 ➜ time ./matrix.out
@@ -83,7 +83,7 @@ user	0m0.897s
 sys 	0m0.010s
 ```
 
-## `time ./test.out` with `-O3` flag
+## `time ./test.out` s `-O3`
 ```
 ➜ make O3
 ➜ time ./matrix.out
@@ -93,8 +93,7 @@ user	0m0.851s
 sys 	0m0.009s
 ```
 
-## Comparison
-
+## Porovnanie
 ```
 the biggest difference is between -O0 and -O1
 -O0 disables all optimatization
@@ -105,13 +104,19 @@ difference: 5.766 seconds
 other optimatization levels have deminishing results
 ```
 
-# conclusion
+# Záver
 ```
 most time is taken by sqrt(), as it's a more complex operation than addition or multiplication
 
 use -O0 -g when you need maximum information for debugging the program
 use -01 to apply quick optimatizations
 use -O3 to apply maxium execution speed optimatization, at the cost of compilation speed
+```
+
+
+# makefile
+```
+preloží matrix zo zdroja pre všetky optimatizačné
 ```
 
 #

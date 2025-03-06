@@ -44,7 +44,6 @@ tan(45°) = 1.000000
 
 
 # `gonio_dynamic` a `gonio_static`
-
 ```
 ➜ ldd ./gonio_dynamic.out
         linux-vdso.so.1 (0x00007737db81a000)
@@ -56,7 +55,19 @@ tan(45°) = 1.000000
         not a dynamic executable
 ```
 
+# `matrix_dynamic_tes` a `matrix_static_test`
+```
+➜ ldd ./out/matrix_dynamic_test.out
+        linux-vdso.so.1 (0x00007e92e13ae000)
+        libmatrix.so => lib/libmatrix.so (0x00007e92e13a3000)
+        libm.so.6 => /lib64/libm.so.6 (0x00007e92e12a0000)
+        libc.so.6 => /lib64/libc.so.6 (0x00007e92e10ad000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007e92e13b0000)
 
+➜ ldd ./out/matrix_static_test.out
+        not a dynamic executable
+```
 
-# Dokumentácia k `matrix.so` a `matrix.a`
+### vytvorené pomocou `libmatrix.so` a `libmatrix.a`
 
+#
