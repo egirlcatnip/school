@@ -70,4 +70,14 @@ tan(45°) = 1.000000
 
 ### vytvorené pomocou `libmatrix.so` a `libmatrix.a`
 
+# makefile
+```
+preloží knižnice libmatrix.so a libratrix.a zo zdroja
+preloží matrix_dynamic_test a matrix_static test zo zdroja
+
+preloží gonio_dynamic zo zdroja (dynamická knižnica math)
+preloží gonio_static zo zdroja  (statická knižnica math)
+```
+
 #
+
