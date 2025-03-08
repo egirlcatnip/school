@@ -53,5 +53,5 @@ dkms.conf
 
 # Local files
 **/build/
-**/libs/
+**/lib/
 **/out/
