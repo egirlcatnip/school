@@ -1,6 +1,5 @@
 # Dokumentácia k `gonio`
 
-
 # Použitie
 
 ### `gonio` bez argumentov
