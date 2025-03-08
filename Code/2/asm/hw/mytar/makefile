@@ -17,7 +17,7 @@ mytar.o:
 	$(CC) $(CFLAGS) -c $(SRC_DIR)/mytar.c -o $(BUILD_DIR)/mytar.o
 
 tar:
-	tar -cf $(OUT_DIR)/tar.out -C $(TAR_SRC_DIR) $(TAR_FILES)
+	cd $(TAR_SRC_DIR) && tar -cf ../../$(OUT_DIR)/tar.tar *
 
 mkdir:
 	mkdir -p $(BUILD_DIR)
