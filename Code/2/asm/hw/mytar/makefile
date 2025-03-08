@@ -16,12 +16,13 @@ mytar: mytar.o
 mytar.o:
 	$(CC) $(CFLAGS) -c $(SRC_DIR)/mytar.c -o $(BUILD_DIR)/mytar.o
 
-mkdir:
-	mkdir -p $(OUT_DIR)
-	mkdir -p $(BUILD_DIR)
-
 tar:
 	tar -cf $(OUT_DIR)/tar.tar -C $(TAR_SRC_DIR) $(TAR_FILES)
 
+mkdir:
+	mkdir -p $(BUILD_DIR)
+	mkdir -p $(OUT_DIR)
+
 clean:
-	rm -rf $(BUILD_DIR)/*.o
+	rm -rf $(BUILD_DIR)
+	rm -rf $(OUT_DIR)

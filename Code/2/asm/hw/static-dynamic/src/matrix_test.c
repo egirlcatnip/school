@@ -1,6 +1,6 @@
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "matrix.h"
 
 void fill_array(float* arr, unsigned size) {
   for (unsigned i = 0; i < size; i++) {

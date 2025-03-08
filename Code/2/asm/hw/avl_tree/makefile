@@ -16,18 +16,16 @@ tree_test.o: avl_tree.o
 avl_tree.o:
 	$(CC) $(CFLAGS) -c $(SRC_DIR)/avl_tree.c -o $(BUILD_DIR)/avl_tree.o
 
+valgrind: all
+	valgrind --leak-check=full $(TARGET)
+
+gdb: all
+	gdb $(TARGET)
+
 mkdir:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(OUT_DIR)
 
-run: all
-	$(TARGET)
-
-valgrind: all
-	valgrind --leak-check=full $(TARGET)
-
-gdbrun: all
-	gdb $(TARGET)
-
 clean:
-	rm -f $(SRC_DIR)/*.o $(OBJS) $(TARGET)
+	rm -rf $(BUILD_DIR)
+	rm -rf $(OUT_DIR)

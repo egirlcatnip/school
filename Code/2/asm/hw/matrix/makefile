@@ -39,8 +39,9 @@ O0_o:
 	$(CC) $(CFLAGS) -O0 -c $(SRC_DIR)/test.c   -o $(BUILD_DIR)/test_O0.o
 
 mkdir:
-	mkdir -p $(BUILD_DIR) $(OUT_DIR)
+	mkdir -p $(BUILD_DIR)
+	mkdir -p $(OUT_DIR)
 
 clean:
-	rm -f $(BUILD_DIR)/*.o
-	rm -f $(OUT_DIR)/matrix_*.out
+	rm -rf $(BUILD_DIR)
+	rm -rf $(OUT_DIR)

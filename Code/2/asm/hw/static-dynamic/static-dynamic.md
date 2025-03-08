@@ -73,7 +73,24 @@ tan(45°) = 1.000000
 # makefile
 ```
 preloží knižnice libmatrix.so a libratrix.a zo zdroja
-preloží matrix_dynamic_test a matrix_static test zo zdroja
+preloží matrix_dynamic_test a matrix_static_test zo zdroja
+
+pre matrix_dynamic_test je potrebné nastaviť cestu k dynamickej knižnici, ak nie je v systémových cestách
+eg. ./lib
+
+➜ ls ./lib
+libmatrix.so
+```
+
+```
+➜ LD_LIBRARY_PATH=../lib ldd ./matrix_dynamic_test.out
+	linux-vdso.so.1 (0x000074a01975b000)
+	libmatrix.so => ../lib/libmatrix.so (0x000074a019750000)
+	libm.so.6 => /lib64/libm.so.6 (0x000074a01964d000)
+	libc.so.6 => /lib64/libc.so.6 (0x000074a01945a000)
+	/lib64/ld-linux-x86-64.so.2 (0x000074a01975d000)
+```
+
 
 preloží gonio_dynamic zo zdroja (dynamická knižnica math)
 preloží gonio_static zo zdroja  (statická knižnica math)
