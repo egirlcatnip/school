@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "name": "C++ - current",
+      "type": "lldb",
+      "preLaunchTask": "Build C++ - current",
+      "request": "launch",
+      "program": "/tmp/${fileBasename}.out",
+      "cwd": "${fileDirname}",
+      "windows": {
+        "program": "${fileDirname}/${fileBasename}.exe"
+      }
+    },
+    {
+      "name": "C++ - picker",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${input:openDialog}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "openDialog",
+      "type": "command",
+      "command": "extension.commandvariable.file.openDialog"
+    }
+  ]
+}
