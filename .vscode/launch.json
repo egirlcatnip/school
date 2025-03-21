@@ -9,7 +9,7 @@
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
       "windows": {
-        "program": "${fileDirname}/${fileBasename}.exe"
+        "program": "C:/Windows/Temp/{fileBasename}.exe"
       }
     },
     {
