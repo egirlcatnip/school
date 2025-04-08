@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "C++ - current",
+      "name": "C++",
       "type": "lldb",
-      "preLaunchTask": "Build C++ - current",
+      "preLaunchTask": "Build C++",
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
@@ -14,6 +14,23 @@
     },
     {
       "name": "C++ - picker",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${input:openDialog}"
+    },
+    {
+      "name": "C",
+      "type": "lldb",
+      "preLaunchTask": "Build C",
+      "request": "launch",
+      "program": "/tmp/${fileBasename}.out",
+      "cwd": "${fileDirname}",
+      "windows": {
+        "program": "C:/Windows/Temp/{fileBasename}.exe"
+      }
+    },
+    {
+      "name": "C - picker",
       "type": "lldb",
       "request": "launch",
       "program": "${input:openDialog}"
