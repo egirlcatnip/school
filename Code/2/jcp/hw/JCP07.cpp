@@ -61,7 +61,7 @@ public:
 };
 
 int main() {
-  char file[] = "Jmena";
+  char file[] = "Jmena-07";
   std::ifstream soubor(file, std::ios::binary);
   if (!soubor) {
     std::cerr << "Error opening file `" << file << "`" << std::endl;

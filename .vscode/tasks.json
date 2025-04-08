@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "Build C++ - current",
-      "command": "clang -g -o0 -Wno-deprecated ${file} -o '/tmp/${fileBasename}.out'",
+      "command": "g++ -g -o0 -Wno-deprecated ${file} -o '/tmp/${fileBasename}.out'",
       "type": "shell",
       "presentation": {
         "reveal": "silent",
@@ -15,7 +15,25 @@
         "isDefault": true
       },
       "windows": {
-        "command": "clang -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
+        "command": "g++ -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build C - current",
+      "command": "gcc -g -o0 -Wno-deprecated ${file} -o '/tmp/${fileBasename}.out'",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "windows": {
+        "command": "g++ -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
       },
       "problemMatcher": []
     },

@@ -6,8 +6,21 @@
       "type": "lldb",
       "preLaunchTask": "Build C++ - current",
       "sourceLanguages": [
-        "c",
         "cpp",
+      ],
+      "request": "launch",
+      "program": "/tmp/${fileBasename}.out",
+      "cwd": "${fileDirname}",
+      "windows": {
+        "program": "C:/Windows/Temp/{fileBasename}.exe"
+      }
+    },
+    {
+      "name": "C - current",
+      "type": "lldb",
+      "preLaunchTask": "Build C - current",
+      "sourceLanguages": [
+        "c",
       ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
