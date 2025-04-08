@@ -2,25 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build C++",
-      "command": "clang++ -g -o0 -Wno-deprecated ${file} -o '/tmp/${fileBasename}.out'",
-      "type": "shell",
-      "presentation": {
-        "reveal": "silent",
-        "showReuseMessage": false,
-        "clear": true
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "windows": {
-        "command": "clang++ -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Build C",
+      "label": "Build C++ - current",
       "command": "clang -g -o0 -Wno-deprecated ${file} -o '/tmp/${fileBasename}.out'",
       "type": "shell",
       "presentation": {
@@ -34,6 +16,21 @@
       },
       "windows": {
         "command": "clang -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build ASM - current",
+      "command": "as -g ${file} -o '/tmp/${fileBasename}.o' && ld '/tmp/${fileBasename}.o' -o '/tmp/${fileBasename}.out'",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
       },
       "problemMatcher": []
     }

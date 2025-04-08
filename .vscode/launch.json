@@ -2,9 +2,13 @@
   "version": "2.0.0",
   "configurations": [
     {
-      "name": "C++",
+      "name": "C++ - current",
       "type": "lldb",
-      "preLaunchTask": "Build C++",
+      "preLaunchTask": "Build C++ - current",
+      "sourceLanguages": [
+        "c",
+        "cpp",
+      ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
@@ -13,28 +17,23 @@
       }
     },
     {
-      "name": "C++ - picker",
+      "name": "ASM - current",
       "type": "lldb",
-      "request": "launch",
-      "program": "${input:openDialog}"
-    },
-    {
-      "name": "C",
-      "type": "lldb",
-      "preLaunchTask": "Build C",
+      "preLaunchTask": "Build ASM - current",
+      "stopOnEntry": true,
+      "sourceLanguages": [
+        "arm"
+      ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
-      "windows": {
-        "program": "C:/Windows/Temp/{fileBasename}.exe"
-      }
     },
     {
-      "name": "C - picker",
+      "name": "LLDB picker",
       "type": "lldb",
       "request": "launch",
       "program": "${input:openDialog}"
-    }
+    },
   ],
   "inputs": [
     {
