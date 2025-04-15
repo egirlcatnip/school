@@ -11,61 +11,91 @@ void print_array(int a[], int count) {
   printf("]\n");
 }
 
+int str_cmp(char *s1, char *s2, int len) {
+  for (int i = 0; i < len; i++) {
+    if (s1[i] != s2[i])
+      return 0;
+  }
+  return 1;
+}
+
+int str_len(char *s) {
+  int len = 0;
+  while (*s) {
+    len++;
+    s++;
+  }
+  return len;
+}
+
+int count_lines(char *text) {
+  int count = 1;
+  while (*text) {
+    if (*text == '\n')
+      count++;
+    text++;
+  }
+  return count;
+}
+
 int **report_occurences(char *text, char **patterns, int n) {
-  int **ret = malloc(n * sizeof(int *));
+  int **result = malloc(n * sizeof(int *));
+  char *line = text;
+  int line_number = 1;
+  int line_count = count_lines(text);
 
   for (int i = 0; i < n; i++) {
-    char *pattern = patterns[i];
-    int patternLength = 0;
-    int count = 0;
-    int line = 1;
+    result[i] = malloc((line_count + 1) * sizeof(int));
+    result[i][0] = 0; // Count of occurrences
+  }
 
-    while (pattern[patternLength] != '\0')
-      patternLength++;
-
-    for (int j = 0; text[j] != '\0'; j++) {
-      if (text[j] == '\n')
-        line++;
-      int match = 1;
-      for (int k = 0; k < patternLength; k++) {
-        if (text[j + k] == '\0' || text[j + k] != pattern[k]) {
-          match = 0;
-          break;
-        }
+  while (*line) {
+    for (int i = 0; i < n; i++) {
+      char *pattern = patterns[i];
+      int pattern_len = str_len(pattern);
+      if (str_cmp(line, pattern, pattern_len)) {
+        result[i][++result[i][0]] = line_number;
       }
-      if (match)
-        count++;
     }
-    ret[i] = malloc((count + 1) * sizeof(int));
-    ret[i][0] = count;
-    line = 1;
-    int index = 1;
-    for (int j = 0; text[j] != '\0'; j++) {
-      if (text[j] == '\n')
-        line++;
-      int match = 1;
-      for (int k = 0; k < patternLength; k++) {
-        if (text[j + k] == '\0' || text[j + k] != pattern[k]) {
-          match = 0;
-          break;
-        }
-      }
-      if (match)
-        ret[i][index++] = line;
+    if (*line == '\n') {
+      line_number++;
+    }
+    line++;
+  }
+
+  return result;
+}
+
+void print_text(char text[], int len) {
+  int line_number = 1;
+
+  printf("Line | Text\n");
+  printf("-----|----------------\n");
+
+  for (int i = 0; i < len; i++) {
+    if (i == 0 || text[i - 1] == '\n') {
+      printf("%4d | ", line_number);
+      line_number++;
+    }
+
+    if (text[i] != '\n') {
+      putchar(text[i]);
+    } else {
+      printf("\\n");
+      printf("\n");
     }
   }
-  return ret;
 }
 
 int main(void) {
-  char *text = "TestTest\nTest1\nTest\nTest2\nTest3\n";
-  char *patterns[] = {"Test", "Test2"};
+  char text[] = "TestTest\nTest1\nTest\nTest2\nTest3\n";
+  int text_size = sizeof(text) / sizeof(text[0]);
+
+  char *patterns[] = {"Test", "Test2", "Test4"};
   int pattern_count = sizeof(patterns) / sizeof(patterns[0]);
 
-  printf("Text:\n");
-  printf("```\n");
-  printf("%s", text);
-  printf("```\n");
+  print_text(text, text_size);
+  printf("\n");
 
   int **result = report_occurences(text, patterns, pattern_count);
 
@@ -79,7 +109,6 @@ int main(void) {
     printf("Count: %d\n", lines_count);
     printf("Lines: ");
     print_array(lines_array, lines_count);
-    free(result[i]);
   }
 
   free(result);
@@ -90,14 +119,14 @@ int main(void) {
 
 // Expected output:
 /*
-Text:
-```
-TestTest
-Test1
-Test
-Test2
-Test3
-```
+Line | Text
+-----|----------------
+   1 | TestTest\n
+   2 | Test1\n
+   3 | Test\n
+   4 | Test2\n
+   5 | Test3\n
+   6 |
 
 Pattern: `Test`
 Count: 6
@@ -106,4 +135,8 @@ Lines: [1, 1, 2, 3, 4, 5]
 Pattern: `Test2`
 Count: 1
 Lines: [4]
+
+Pattern: `Test4`
+Count: 0
+Lines: []
 */

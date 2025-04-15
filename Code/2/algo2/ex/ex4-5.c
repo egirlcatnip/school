@@ -179,9 +179,17 @@ int get_tree_width(int height) {
 // Places a node's value in the visualization grid.
 // Only the first character of the number is displayed.
 void place_value(char **grid, int row, int col, int value) {
-  char buf[10];
+  char buf[12]; // large enough for any 32-bit int
   snprintf(buf, sizeof(buf), "%d", value);
-  grid[row][col] = buf[0];
+  int len = str_len(buf);
+
+  // Place number centered around `col` if possible
+  int start_col = col - len / 2;
+  for (int i = 0; i < len; i++) {
+    if (start_col + i >= 0) {
+      grid[row][start_col + i] = buf[i];
+    }
+  }
 }
 
 // Recursively fills the grid with tree nodes and draws connector lines
@@ -285,7 +293,7 @@ int find_max(BinaryTree *t) {
 */
 BinaryTree *binary_tree(void) {
   BinaryTree *root = create_tree(0);
-  BinaryTree *leftChild = append_tree_left(root, create_tree(1));
+  BinaryTree *leftChild = append_tree_left(root, create_tree(111));
   append_tree_left(leftChild, create_tree(3));
   append_tree_right(leftChild, create_tree(4));
 
