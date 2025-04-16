@@ -3,7 +3,7 @@
     "Add": [
       "-Wall",
       "-Wextra",
-      "-Wpedantic",
+      "-Wpedantic"
     ]
   }
 }
