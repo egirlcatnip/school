@@ -12,7 +12,7 @@ typedef struct RNB {
 } RNB;
 
 RNB *createNode(int value) {
-  RNB *node = malloc(sizeof(RNB));
+  RNB *node = (RNB *)malloc(sizeof(RNB));
   node->value = value;
   node->color = RED;
   node->left = node->right = node->parent = NULL;

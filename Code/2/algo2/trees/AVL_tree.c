@@ -11,7 +11,7 @@ typedef struct AVL {
 int max(int a, int b) { return (a > b) ? a : b; }
 
 AVL *createNode(int value) {
-  AVL *node = malloc(sizeof(AVL));
+  AVL *node = (AVL *)malloc(sizeof(AVL));
   node->value = value;
   node->left = node->right = NULL;
   node->height = 1;
@@ -161,14 +161,14 @@ int main(void) {
   root = insertNode(root, 50);
   root = insertNode(root, 25);
 
-  printf("Inorder traversal: ");
+  printf("Inorder traversal:\n");
   inorder(root);
   printf("\n");
 
   printf("Deleting node with value 20\n");
   root = deleteNode(root, 20);
 
-  printf("Inorder traversal after deletion: ");
+  printf("Inorder traversal after deletion:\n");
   inorder(root);
   printf("\n");
 

@@ -33,7 +33,7 @@
         "isDefault": true
       },
       "windows": {
-        "command": "g++ -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
+        "command": "gcc -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
       },
       "problemMatcher": []
     },

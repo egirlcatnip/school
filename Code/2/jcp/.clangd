@@ -1,10 +1,10 @@
 {
   "CompileFlags": {
     "Add": [
-      "-std=c++23",
-    ]
+      "-std=c++23"
+    ],
     "Remove": [
-      "-std=c23",
+      "-std=c23"
     ]
   }
 }

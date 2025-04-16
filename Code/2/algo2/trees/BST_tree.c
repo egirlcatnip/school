@@ -8,7 +8,7 @@ typedef struct BST {
 } BST;
 
 BST *createNode(int value) {
-  BST *node = malloc(sizeof(BST));
+  BST *node = (BST *)malloc(sizeof(BST));
   node->value = value;
   node->left = NULL;
   node->right = NULL;

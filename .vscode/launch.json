@@ -5,9 +5,6 @@
       "name": "C++ - current",
       "type": "lldb",
       "preLaunchTask": "Build C++ - current",
-      "sourceLanguages": [
-        "cpp",
-      ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
@@ -19,9 +16,6 @@
       "name": "C - current",
       "type": "lldb",
       "preLaunchTask": "Build C - current",
-      "sourceLanguages": [
-        "c",
-      ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
@@ -34,9 +28,6 @@
       "type": "lldb",
       "preLaunchTask": "Build ASM - current",
       "stopOnEntry": true,
-      "sourceLanguages": [
-        "arm"
-      ],
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
       "cwd": "${fileDirname}",
