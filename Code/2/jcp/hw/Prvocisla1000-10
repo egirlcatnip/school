@@ -1,0 +1,27 @@
+a nula 0
+a jedna 1
+a dve 2
+
+a prvocislo 2
+w jedna prvocislo
+
+a prvocislo 3
+w dve prvocislo
+
+a prvocislo 5
+a liche 3
+c zbytek prvocislo
+% zbytek liche
+e zbytek 6
++ liche dve
+c podil liche
+/ podil prvocislo
+g podil 1
+e nula -8
+w dve prvocislo
++ prvocislo dve
+a n 1000
+- n prvocislo
+g n -14
+x nula nula
+

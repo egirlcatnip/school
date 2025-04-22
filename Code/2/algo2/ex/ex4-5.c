@@ -181,7 +181,7 @@ int get_tree_width(int height) {
 void place_value(char **grid, int row, int col, int value) {
   char buf[12]; // large enough for any 32-bit int
   snprintf(buf, sizeof(buf), "%d", value);
-  int len = str_len(buf);
+  int len = strlen(buf);
 
   // Place number centered around `col` if possible
   int start_col = col - len / 2;

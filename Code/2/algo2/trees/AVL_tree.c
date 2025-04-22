@@ -13,7 +13,8 @@ int max(int a, int b) { return (a > b) ? a : b; }
 AVL *createNode(int value) {
   AVL *node = (AVL *)malloc(sizeof(AVL));
   node->value = value;
-  node->left = node->right = NULL;
+  node->left = NULL;
+  node->right = NULL;
   node->height = 1;
   return node;
 }
@@ -175,3 +176,5 @@ int main(void) {
   freeNode(root);
   return 0;
 }
+
+// Konya
