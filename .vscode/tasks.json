@@ -39,7 +39,7 @@
     },
     {
       "label": "Build ASM - current",
-      "command": "as -g ${file} -o '/tmp/${fileBasename}.o' && ld '/tmp/${fileBasename}.o' -o '/tmp/${fileBasename}.out'",
+      "command": "arm-linux-gnu-as -g ${file} -o '/tmp/${fileBasename}.o' && arm-linux-gnu-ld '/tmp/${fileBasename}.o' -o '/tmp/${fileBasename}.out'",
       "type": "shell",
       "presentation": {
         "reveal": "silent",

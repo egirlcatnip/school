@@ -7,7 +7,6 @@
       "preLaunchTask": "Build C++ - current",
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
-      "cwd": "${fileDirname}",
       "windows": {
         "program": "C:/Windows/Temp/{fileBasename}.exe"
       }
@@ -18,25 +17,15 @@
       "preLaunchTask": "Build C - current",
       "request": "launch",
       "program": "/tmp/${fileBasename}.out",
-      "cwd": "${fileDirname}",
       "windows": {
         "program": "C:/Windows/Temp/{fileBasename}.exe"
       }
     },
     {
-      "name": "ASM - current",
-      "type": "lldb",
-      "preLaunchTask": "Build ASM - current",
-      "stopOnEntry": true,
-      "request": "launch",
-      "program": "/tmp/${fileBasename}.out",
-      "cwd": "${fileDirname}",
-    },
-    {
-      "name": "LLDB picker",
+      "name": "LLDB Picker",
       "type": "lldb",
       "request": "launch",
-      "program": "${input:openDialog}"
+      "program": "${input:openDialog}",
     },
   ],
   "inputs": [
