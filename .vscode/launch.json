@@ -27,6 +27,13 @@
       "request": "launch",
       "program": "${input:openDialog}",
     },
+    {
+      "name": "GDB Picker",
+      "type": "gdb",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "target": "qemu-arm ${input:openDialog}"
+    },
   ],
   "inputs": [
     {

@@ -4,6 +4,23 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true
+    "**/Thumbs.db": true,
+    "[!C]*/**": true,
+    "C[!o]*/**": true,
+    "Co[!d]*/**": true,
+    "Cod[!e]*/**": true,
+    "Code/[!2]*/**": true,
+    "Code/2/[!a]*/**": true,
+    "Code/2/a[!s]*/**": true,
+    "Code/2/as[!m]*/**": true,
+    "Code/2/asm/[!h]*/**": true,
+    "Code/2/asm/h[!w]*/**": true,
+    "Code/2/asm/hw/[!a]*/**": true,
+    "Code/2/asm/hw/a[!r]*/**": true,
+    "Code/2/asm/hw/ar[!m]*/**": true,
+    "Code/2/asm/hw/arm/[!t]*/**": true,
+    "Code/2/asm/hw/arm/t[!e]*/**": true,
+    "Code/2/asm/hw/arm/te[!s]*/**": true,
+    "Code/2/asm/hw/arm/tes[!t]*/**": true
   }
 }
