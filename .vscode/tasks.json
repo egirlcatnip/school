@@ -17,7 +17,6 @@
       "windows": {
         "command": "g++ -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
       },
-      "problemMatcher": []
     },
     {
       "label": "Build C - current",
@@ -35,10 +34,9 @@
       "windows": {
         "command": "gcc -g -o0 -Wno-deprecated ${file} -o 'C:/Windows/Temp/{fileBasename}.exe'"
       },
-      "problemMatcher": []
     },
     {
-      "label": "Build ASM - current",
+      "label": "Build ARMv7 - current",
       "command": "arm-linux-gnu-as -g ${file} -o '/tmp/${fileBasename}.o' && arm-linux-gnu-ld '/tmp/${fileBasename}.o' -o '/tmp/${fileBasename}.out'",
       "type": "shell",
       "presentation": {
@@ -50,7 +48,20 @@
         "kind": "build",
         "isDefault": true
       },
-      "problemMatcher": []
+    },
+    {
+      "label": "Build ARMv8 - current",
+      "command": "aarch64-linux-gnu-as -g ${file} -o '/tmp/${fileBasename}.o' && aarch64-linux-gnu-ld '/tmp/${fileBasename}.o' -o '/tmp/${fileBasename}.out'",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
     }
   ]
 }

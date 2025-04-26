@@ -22,13 +22,25 @@
       }
     },
     {
+      "name": "ARMv8 - current",
+      "type": "lldb",
+      "preLaunchTask": "Build ARMv8 - current",
+      "request": "launch",
+      "program": "/tmp/${fileBasename}.out",
+      "stopOnEntry": true,
+      "windows": {
+        "program": "C:/Windows/Temp/{fileBasename}.exe"
+      }
+    },
+    {
       "name": "LLDB Picker",
       "type": "lldb",
       "request": "launch",
       "program": "${input:openDialog}",
+      "stopOnEntry": true
     },
     {
-      "name": "GDB Picker",
+      "name": "GDB Remote Picker",
       "type": "gdb",
       "request": "launch",
       "cwd": "${workspaceRoot}",
