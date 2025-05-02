@@ -104,3 +104,23 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
+// Konya
+
+// Expected usage:
+/*
+$ ./hw2.out encode test.uncompressed test.compressed;
+  ./hw2.out decode test.compressed test.decompressed
+
+$ erd
+  4096 B ┌─ hw2.c
+  12288 B ├─ test.compressed
+  45056 B ├─ test.decompressed
+  45056 B ├─ test.uncompressed
+
+$ sha256sum test.uncompressed test.decompressed
+97551fd9afcccd3c20591994c26af5e6ac01a85be87ec780e2495466fa670b19
+test.uncompressed
+97551fd9afcccd3c20591994c26af5e6ac01a85be87ec780e2495466fa670b19
+test.decompressed
+*/
