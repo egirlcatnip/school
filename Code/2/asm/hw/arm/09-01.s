@@ -10,8 +10,9 @@ _start:
     mov r1, #5            // Height of the rectangle (y)
     bl draw_rectangle     // Call the draw_rectangle function
 
+_exit:
     mov r7, #SYS_EXIT     // Exit the program
-    mov r0, #42           // Exit code
+    mov r0, #0           // Exit code
     svc #SYS_CALL
 
 draw_rectangle:
@@ -19,35 +20,45 @@ draw_rectangle:
     mov r4, r0                // Store width (x) in r4
     mov r5, r1                // Store height (y) in r5
 
-draw_row:
-    mov r6, r4                // Copy width (x) to r6 for each row
+    bl draw_outer_loop  // Call the outer loop
 
-print_stars:
-    cmp r6, #0                // Check if we've printed all stars for this row
-    beq end_row               // If no more stars to print, end the row
+draw_outer_loop:
+    cmp r5, #0                // Compare height (y) with 0
+    beq draw_exit             // If y == 0, exit the loop
 
-    mov r7, #SYS_WRITE        // SYS_WRITE system call
-    mov r0, #STDOUT           // File descriptor STDOUT
-    adr r1, star_char         // Address of the '*' character
-    mov r2, #1                // Length of the '*' character (1 byte)
-    svc #SYS_CALL
+    mov r6, r4                // Store width (x) in r6
+    bl draw_inner_loop        // Call the inner loop
+draw_inner_loop:
+    cmp r6, #0                // Compare width (x) with 0
+    beq draw_newline          // If x == 0, go to newline
 
-    subs r6, r6, #1           // Decrement the width counter
-    b print_stars             // Repeat for the next star
+    ldr r0, =STDOUT           // Load STDOUT file descriptor
+    ldr r1, =star_char       // Load address of '*' character
+    mov r2, #1                // Number of bytes to write
+    mov r7, #SYS_WRITE        // System call for write
+    svc #SYS_CALL             // Make the system call
 
-end_row:
-    adr r1, newline           // Address of newline character
-    mov r2, #1                // Length of newline string
-    svc #0                    // Write newline character
+    sub r6, r6, #1            // Decrement width (x)
+    b draw_inner_loop         // Repeat inner loop
 
-    subs r5, r5, #1           // Decrement height (y)
-    bne draw_row              // Repeat if there are more rows
+draw_newline:
+    ldr r0, =STDOUT           // Load STDOUT file descriptor
+    ldr r1, =newline          // Load address of newline character
+    mov r2, #1                // Number of bytes to write
+    mov r7, #SYS_WRITE        // System call for write
+    svc #SYS_CALL             // Make the system call
 
-    pop {r4, r5, r6, r7, lr}  // Restore registers
-    bx lr                     // Return from function
+    sub r5, r5, #1            // Decrement height (y)
+    b draw_outer_loop         // Repeat outer loop
+
+draw_exit:
+    pop {r4, r5, r6, r7, pc}  // Restore registers and return
+    bx lr
+
+
 
 star_char:
     .ascii "*"                // Single '*' character
-
+    .align 2                  // Ensure proper alignment
 newline:
     .ascii "\n"               // Newline character
