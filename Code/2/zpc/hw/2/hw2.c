@@ -99,13 +99,18 @@ int main(int argc, char *argv[]) {
   } else {
     printf("Invalid operation. Use 'encode' or 'decode'.\n");
     printf("Usage: hw2 <encode|decode> <input_file> <output_file>\n");
-    return EXIT_FAILURE;
   }
 
-  return 0;
+  return EXIT_FAILURE;
 }
 
 // Konya
+
+// text.uncompressed:
+/*
+aaaaaaabbbbbbbbccccccccccccddddddddddeeeeeee
+-//- for 1000 lines
+*/
 
 // Expected usage:
 /*
