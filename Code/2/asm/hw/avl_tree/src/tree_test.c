@@ -2,20 +2,31 @@
 #include <stdio.h>
 
 int main(void) {
-  AVLNode *root = NULL;
+  AVL *root = NULL;
+  root = insert(root, 10, 100);
+  root = insert(root, 20, 200);
+  root = insert(root, 30, 300);
+  root = insert(root, 40, 400);
+  root = insert(root, 50, 500);
+  root = insert(root, 25, 250);
 
-  int keys[] = {20, 10, 30, 40, 50, 25};
-
-  int n = sizeof(keys) / sizeof(keys[0]);
-
-  for (int i = 0; i < n; i++) {
-    root = insert_node(root, keys[i]);
-  }
-
-  printf("Inorder traversal of the constructed AVL tree:\n");
-  inorder_traversal(root);
+  printf("Inorder traversal:\n");
+  inorder(root);
   printf("\n");
 
-  free_tree(root);
+  AVL *found = search(root, 25);
+  if (found)
+    printf("Found key 25 with value %d\n", found->value);
+  else
+    printf("Key 25 not found\n");
+
+  printf("Deleting key 20\n");
+  root = deleteNode(root, 20);
+
+  printf("Inorder traversal after deletion:\n");
+  inorder(root);
+  printf("\n");
+
+  freeTree(root);
   return 0;
 }

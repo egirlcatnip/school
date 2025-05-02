@@ -1,95 +1,147 @@
 #include "avl_tree.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-int max(int a, int b) { return (a > b) ? a : b; }
+int max(int a, int b) { return a > b ? a : b; }
 
-int height(AVLNode *node) {
-  if (node == NULL)
+AVL *createNode(int key, int value) {
+  AVL *node = (AVL *)malloc(sizeof(AVL));
+  node->key = key;
+  node->value = value;
+  node->height = 1;
+  node->left = NULL;
+  node->right = NULL;
+  return node;
+}
+
+void freeTree(AVL *node) {
+  if (!node)
+    return;
+  freeTree(node->left);
+  freeTree(node->right);
+  free(node);
+}
+
+int getHeight(AVL *node) {
+  if (!node)
     return 0;
   return node->height;
 }
 
-AVLNode *create_node(int key) {
-  AVLNode *node = (AVLNode *)malloc(sizeof(AVLNode));
-  node->key = key;
-  node->left = node->right = NULL;
-  node->height = 1;
-  return node;
+int getBalance(AVL *node) {
+  if (!node)
+    return 0;
+  return getHeight(node->left) - getHeight(node->right);
 }
 
-AVLNode *right_rotate(AVLNode *y) {
-  AVLNode *x = y->left;
-  AVLNode *T2 = x->right;
+AVL *rotateRight(AVL *y) {
+  AVL *x = y->left;
+  AVL *T2 = x->right;
   x->right = y;
   y->left = T2;
-  y->height = max(height(y->left), height(y->right)) + 1;
-  x->height = max(height(x->left), height(x->right)) + 1;
+  y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+  x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
   return x;
 }
 
-AVLNode *left_rotate(AVLNode *x) {
-  AVLNode *y = x->right;
-  AVLNode *T2 = y->left;
+AVL *rotateLeft(AVL *x) {
+  AVL *y = x->right;
+  AVL *T2 = y->left;
   y->left = x;
   x->right = T2;
-  x->height = max(height(x->left), height(x->right)) + 1;
-  y->height = max(height(y->left), height(y->right)) + 1;
+  x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+  y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
   return y;
 }
 
-int get_balance(AVLNode *node) {
-  if (node == NULL)
-    return 0;
-  return height(node->left) - height(node->right);
-}
-
-AVLNode *insert_node(AVLNode *node, int key) {
-  if (node == NULL)
-    return create_node(key);
-
+AVL *insert(AVL *node, int key, int value) {
+  if (!node)
+    return createNode(key, value);
   if (key < node->key)
-    node->left = insert_node(node->left, key);
+    node->left = insert(node->left, key, value);
   else if (key > node->key)
-    node->right = insert_node(node->right, key);
-  else
+    node->right = insert(node->right, key, value);
+  else {
+    node->value = value;
     return node;
-
-  node->height = 1 + max(height(node->left), height(node->right));
-
-  int balance = get_balance(node);
-  // Left Left Case
+  }
+  node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+  int balance = getBalance(node);
   if (balance > 1 && key < node->left->key)
-    return right_rotate(node);
-  // Right Right Case
+    return rotateRight(node);
   if (balance < -1 && key > node->right->key)
-    return left_rotate(node);
-  // Left Right Case
+    return rotateLeft(node);
   if (balance > 1 && key > node->left->key) {
-    node->left = left_rotate(node->left);
-    return right_rotate(node);
+    node->left = rotateLeft(node->left);
+    return rotateRight(node);
   }
-  // Right Left Case
   if (balance < -1 && key < node->right->key) {
-    node->right = right_rotate(node->right);
-    return left_rotate(node);
+    node->right = rotateRight(node->right);
+    return rotateLeft(node);
   }
-
   return node;
 }
 
-void inorder_traversal(AVLNode *root) {
-  if (root != NULL) {
-    inorder_traversal(root->left);
-    printf("%d ", root->key);
-    inorder_traversal(root->right);
-  }
+AVL *minNode(AVL *node) {
+  AVL *current = node;
+  while (current->left)
+    current = current->left;
+  return current;
 }
 
-void free_tree(AVLNode *root) {
-  if (root) {
-    free_tree(root->left);
-    free_tree(root->right);
-    free(root);
+AVL *deleteNode(AVL *node, int key) {
+  if (!node)
+    return node;
+  if (key < node->key)
+    node->left = deleteNode(node->left, key);
+  else if (key > node->key)
+    node->right = deleteNode(node->right, key);
+  else {
+    if (!node->left || !node->right) {
+      AVL *temp = node->left ? node->left : node->right;
+      if (!temp) {
+        free(node);
+        return NULL;
+      } else {
+        *node = *temp;
+        free(temp);
+      }
+    } else {
+      AVL *temp = minNode(node->right);
+      node->key = temp->key;
+      node->value = temp->value;
+      node->right = deleteNode(node->right, temp->key);
+    }
   }
+  if (!node)
+    return node;
+  node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+  int balance = getBalance(node);
+  if (balance > 1 && getBalance(node->left) >= 0)
+    return rotateRight(node);
+  if (balance > 1 && getBalance(node->left) < 0) {
+    node->left = rotateLeft(node->left);
+    return rotateRight(node);
+  }
+  if (balance < -1 && getBalance(node->right) <= 0)
+    return rotateLeft(node);
+  if (balance < -1 && getBalance(node->right) > 0) {
+    node->right = rotateRight(node->right);
+    return rotateLeft(node);
+  }
+  return node;
+}
+
+AVL *search(AVL *node, int key) {
+  if (!node || node->key == key)
+    return node;
+  if (key < node->key)
+    return search(node->left, key);
+  return search(node->right, key);
+}
+
+void inorder(AVL *node) {
+  if (!node)
+    return;
+  inorder(node->left);
+  printf("(%d:%d) ", node->key, node->value);
+  inorder(node->right);
 }
