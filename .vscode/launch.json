@@ -40,18 +40,26 @@
       "stopOnEntry": true
     },
     {
-      "name": "GDB Remote Picker",
+      "name": "GDB Remote",
       "type": "gdb",
-      "request": "launch",
+      "request": "attach",
       "cwd": "${workspaceRoot}",
-      "target": "qemu-arm ${input:openDialog}"
-    },
+      "target": "localhost:1234",
+      "remote": true,
+      "stopAtConnect": true
+    }
   ],
   "inputs": [
     {
       "id": "openDialog",
       "type": "command",
       "command": "extension.commandvariable.file.openDialog"
+    },
+    {
+      "id": "stringInput",
+      "type": "promptString",
+      "description": "Enter debug port",
+      "default": "1234"
     }
   ]
 }
