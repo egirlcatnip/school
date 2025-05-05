@@ -54,3 +54,6 @@ dkms.conf
 # Local files
 **/build/
 **/out/
+
+# QEMU
+*.core

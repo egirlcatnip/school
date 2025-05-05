@@ -37,7 +37,7 @@
       "type": "lldb",
       "request": "launch",
       "program": "${input:openDialog}",
-      "stopOnEntry": true
+      "stopOnEntry": true,
     },
     {
       "name": "GDB Remote",
