@@ -6,12 +6,12 @@
 
 fact:
   cmp r0, #1
-  beq zero_one_case // If i == 1
+  beq zero_one_case // if i == 1
   cmp r0, #0
-  beq zero_one_case // If i == 0
+  beq zero_one_case // if i == 0
 
-  blt negative_case // If i < 0,
-  bgt positive_case // If i > 0
+  blt negative_case // if i < 0
+  bgt positive_case // if i > 0
 
   bx lr
 
@@ -29,7 +29,7 @@ positive_case:
   mov r2, lr       // save return address of fact
 
 loop:
-  cmp r1, #1       // check if counter is 1
+  cmp r1, #1       // check if counter == 1
   beq exit_loop    // if yes, return to fact
 
   mul r0, r1, r0   // multiply i by counter
