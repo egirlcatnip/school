@@ -1,4 +1,4 @@
-// int minimum(int x)
+// int minimum(int count, int *values)
 
 
 .global minimum

@@ -1,4 +1,4 @@
-// int min3u(int a, int b, int c)
+// unsigned short min3u(int a, int b, int c)
 
 
 .global min3u

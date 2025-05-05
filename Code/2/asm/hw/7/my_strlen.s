@@ -1,4 +1,4 @@
-// int my_strlen(int x)
+// int my_strlen(char *len)
 
 
 .global my_strlen

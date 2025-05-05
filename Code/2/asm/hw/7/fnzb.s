@@ -1,4 +1,4 @@
-// int fnzb(int x)
+// char fnzb(int x)
 
 
 .global fnzb

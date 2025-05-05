@@ -1,8 +1,8 @@
-// int minimum(int x)
+// void multiples(int x)
 
 
-.global minimum
+.global multiples
 // r0 = short shorts[]
 // r1 = short *n
 
-minimum:
+multiples:
