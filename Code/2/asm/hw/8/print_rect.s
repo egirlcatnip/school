@@ -1,80 +1,94 @@
-// void print_rect(int rows, int columns)
+// void print_rect(int rows, int columns);
+// void print_row(int n, char c);
+
 
 .global _start
+
 _start:
-	mov r0, #2
-	mov r1, #69
-  bx print_rect
-
-  b exit
-
-
+    mov r0, #3         // rows
+    mov r1, #5         // columns
+    bl print_rect
+    b exit
 
 .global print_rect
-  // r0 = rows
-  // r1 = columns
+// r0 = rows
+// r1 = columns
 
 print_rect:
-  mov r3, lr           // save return address
+    push {lr}          // save return address for print_rect
+    mov r4, r0         // save rows
+    mov r5, r1         // save columns
 
-  cmp r0, #0           // Check if rows == 0
-  beq exit_loop        // If rows == 0, exit
+rect_loop:
+    cmp r4, #0          // if rows == 0, exit loop
+    beq rect_done
 
-  mov r4, r0           // Copy rows to r4 for loop control
-  mov r5, r1           // Copy columns to r5 for printing
+    mov r0, r5
+    mov r1, #42         // '*' character
+    bl print_row
 
-printrect_loop:
-  cmp r4, #0           // Check if rows == 0
-  beq exit_loop        // If rows == 0, exit
+    subs r4, r4, #1
+    b rect_loop         // repeat
 
-  mov r0, r5           // Set r0 to columns
-  mov r1, #42          // Set r1 to ASCII code for '*'
-  bl print_row         // Call print_row with columns
+rect_done:
+    pop {lr}            // restore return address for print_rect
+    bx lr               // return to print_rect
 
-  subs r4, r4, #1      // Decrement row count
-  b printrect_loop     // Repeat for next row
+
 
 
 .global print_row
-  // r0 = n
-  // r1 = c
+// r0 = n
+// r1 = c
 
 print_row:
-  mov r3, lr           // save return address
-  bx printrow_loop
+    push {lr}           // save return address for print_row
+    mov r2, r0          // counter
 
-  bx lr
+char_loop:
+    cmp r2, #0          // if n == 0, exit loop
+    beq char_done
+
+    mov r0, r1          // character to print
+    bl print_char
+
+    subs r2, r2, #1     // decrement counter
+    b char_loop         // repeat
+
+char_done:
+    b print_nl
+
+print_nl:
+    mov r0, #10        // newline character ('\n')
+    bl putchar
+    pop {lr}           // restore return address for print_row
+    bx lr              // return to print_row caller
+
+.global print_char
+print_char:
+    push {lr}          // save return address for print_char
+
+    bl putchar
+
+    pop {lr}           // restore return address for print_char
+    bx lr              // return to print_char caller
 
 
-printrow_loop:
-  cmp r0, #0
-  beq newline          // If n == 0, print newline
-  bne printchar        // If n != 0, print character
 
-  subs r0, r0, #1      // decrement counter
-
-  b printrow_loop               // repeat
-
-newline:
-    mov r2, r0         // save counter
-    mov r0, #10        // Set r0 to 10 ('\n')
-    bl putchar         // Print newline
-
-    mov r0, r2         // restore counter
-    b exit_loop        // Exit the function
-
-printchar:
-  mov r2, r0           // save counter
-
-  mov r0, r1           // r0 = c
-
-  bl putchar           // putchar
-  mov r0, r2           // restore counter
-  b exit_loop
-
-exit_loop:
-  bx r3              // Return from function
+// Testing putchar
+.global putchar
+putchar:
+    push {r1, r2, r7}   // save registers used in syscall
+    mov r7, #4
+    mov r1, sp
+    strb r0, [r1]
+    mov r0, #1
+    mov r2, #1
+    svc 0
+    pop {r1, r2, r7}    // Restore registers after syscall
+    bx lr
 
 exit:
-  mov r7, #1         // syscall number for exit
-  svc 0              // make syscall to exit
+    mov r0, #0         // exit code
+    mov r7, #1
+    svc 0
