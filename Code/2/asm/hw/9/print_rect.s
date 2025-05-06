@@ -1,13 +1,41 @@
+// void print_rect(int rows, int columns);
 // void print_row(int n, char c);
 
 
 .global _start
 
 _start:
-  mov r0, #10          // number of characters to print
-  mov r1, #69          // character 'E'
-  bl print_row
+  mov r0, #5          // rows
+  mov r1, #20         // columns
+  bl print_rect
   b exit
+
+.global print_rect
+// r0 = rows
+// r1 = columns
+
+print_rect:
+  push {lr}          // save return address for print_rect
+  mov r4, r0         // save rows
+  mov r5, r1         // save columns
+
+rect_loop:
+  cmp r4, #0          // if rows == 0, exit loop
+  beq rect_done
+
+  mov r0, r5
+  mov r1, #42         // '*' character
+  bl print_row
+
+  subs r4, r4, #1
+  b rect_loop         // repeat
+
+rect_done:
+  pop {lr}            // restore return address for print_rect
+  bx lr               // return to print_rect
+
+
+
 
 .global print_row
 // r0 = n
