@@ -1,104 +1,102 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T int
+#define T 3;
 
-typedef struct BTreeNode {
-  T value;
-  struct BTreeNode *left, *right;
-} BTreeNode;
+typedef struct B {
+  int value;
+  struct B *left, *right;
+} B;
 
-BTreeNode *createNode(T value) {
-  BTreeNode *node = malloc(sizeof(BTreeNode));
+int max(int a, int b) { return (a > b) ? a : b; }
+
+B *createNode(int value) {
+  B *node = (B *)malloc(sizeof(B));
+
   node->value = value;
   node->left = NULL;
   node->right = NULL;
+
   return node;
 }
 
-BTreeNode *insert(BTreeNode *root, T value) {
-  if (root == NULL)
-    return createNode(value);
-  if (value < root->value)
-    root->left = insert(root->left, value);
-  else if (value > root->value)
-    root->right = insert(root->right, value);
-  return root;
+void freeNode(B *node) {
+  if (!node)
+    return;
+  freeNode(node->left);
+  freeNode(node->right);
+  free(node);
 }
 
-BTreeNode *findMin(BTreeNode *node) {
-  while (node->left != NULL)
-    node = node->left;
-  return node;
+int getHeight(B *node) {
+  if (!node)
+    return 0;
+  return 1 + max(getHeight(node->left), getHeight(node->right));
 }
 
-BTreeNode *deleteNode(BTreeNode *root, T value) {
-  if (root == NULL)
-    return NULL;
-  if (value < root->value)
-    root->left = deleteNode(root->left, value);
-  else if (value > root->value)
-    root->right = deleteNode(root->right, value);
-  else {
-    if (root->left == NULL) {
-      BTreeNode *temp = root->right;
-      free(root);
-      return temp;
-    } else if (root->right == NULL) {
-      BTreeNode *temp = root->left;
-      free(root);
-      return temp;
-    } else {
-      BTreeNode *temp = findMin(root->right);
-      root->value = temp->value;
-      root->right = deleteNode(root->right, temp->value);
-    }
+int getBalance(B *node) {
+  if (!node)
+    return 0;
+  return getHeight(node->left) - getHeight(node->right);
+}
+
+B *insertNode(B *node, int value) {
+  //
+}
+
+B *deleteNode(B *node, int value) {
+  //
+}
+
+B *search(B *node, int value) {
+  if (!node || node->value == value)
+    return node;
+  if (value < node->value)
+    return search(node->left, value);
+  return search(node->right, value);
+}
+
+void inorder(B *node) {
+  if (node) {
+    inorder(node->left);
+    printf("%d ", node->value);
+    inorder(node->right);
   }
-  return root;
-}
-
-void inorder(BTreeNode *root) {
-  if (root == NULL)
-    return;
-  inorder(root->left);
-  printf("%d ", root->value);
-  inorder(root->right);
-}
-
-void freeNode(BTreeNode *root) {
-  if (root == NULL)
-    return;
-  freeNode(root->left);
-  freeNode(root->right);
-  free(root);
 }
 
 int main(void) {
-  BTreeNode *root = NULL;
+  B *root = NULL;
 
-  root = insert(root, 10);
-  root = insert(root, 20);
-  root = insert(root, 5);
-  root = insert(root, 6);
-  root = insert(root, 12);
-  root = insert(root, 30);
-  root = insert(root, 7);
-  root = insert(root, 17);
-  root = insert(root, 50);
-  root = insert(root, 66);
+  root = insertNode(root, 10);
+  root = insertNode(root, 20);
+  root = insertNode(root, 5);
+  root = insertNode(root, 6);
+  root = insertNode(root, 12);
+  root = insertNode(root, 30);
+  root = insertNode(root, 7);
+  root = insertNode(root, 17);
+  root = insertNode(root, 50);
+  root = insertNode(root, 66);
 
   printf("Inorder traversal:\n");
   inorder(root);
   printf("\n");
 
+  printf("Deleting nodes with value 20:\n");
   root = deleteNode(root, 20);
+
+  printf("Deleting nodes with value 10:\n");
   root = deleteNode(root, 10);
+
+  printf("Deleting nodes with value 7:\n");
   root = deleteNode(root, 7);
 
-  printf("After deletions:\n");
+  printf("Inorder traversal after deletion:\n");
   inorder(root);
   printf("\n");
 
   freeNode(root);
   return 0;
 }
+
+// Konya

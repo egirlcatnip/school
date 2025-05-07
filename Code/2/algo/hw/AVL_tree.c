@@ -47,9 +47,9 @@ AVL *minAVL(AVL *node) {
 
 AVL *rotateRight(AVL *y) {
   AVL *x = y->left;
-  AVL *T2 = x->right;
+  AVL *temp = x->right;
   x->right = y;
-  y->left = T2;
+  y->left = temp;
   y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
   x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
   return x;
@@ -57,9 +57,9 @@ AVL *rotateRight(AVL *y) {
 
 AVL *rotateLeft(AVL *x) {
   AVL *y = x->right;
-  AVL *T2 = y->left;
+  AVL *temp = y->left;
   y->left = x;
-  x->right = T2;
+  x->right = temp;
   x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
   y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
   return y;
@@ -155,19 +155,30 @@ void inorder(AVL *node) {
 
 int main(void) {
   AVL *root = NULL;
+
   root = insertNode(root, 10);
   root = insertNode(root, 20);
+  root = insertNode(root, 5);
+  root = insertNode(root, 6);
+  root = insertNode(root, 12);
   root = insertNode(root, 30);
-  root = insertNode(root, 40);
+  root = insertNode(root, 7);
+  root = insertNode(root, 17);
   root = insertNode(root, 50);
-  root = insertNode(root, 25);
+  root = insertNode(root, 66);
 
   printf("Inorder traversal:\n");
   inorder(root);
   printf("\n");
 
-  printf("Deleting node with value 20\n");
+  printf("Deleting nodes with value 20:\n");
   root = deleteNode(root, 20);
+
+  printf("Deleting nodes with value 10:\n");
+  root = deleteNode(root, 10);
+
+  printf("Deleting nodes with value 7:\n");
+  root = deleteNode(root, 7);
 
   printf("Inorder traversal after deletion:\n");
   inorder(root);
