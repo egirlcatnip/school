@@ -1,66 +1,130 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define T 3;
+#define T 3
+#define MAX_VALUES (2 * T - 1)
+#define MIN_VALUES (T - 1)
+#define MAX_CHILDREN (2 * T)
 
 typedef struct B {
-  int value;
-  struct B *left, *right;
+  int values[MAX_VALUES];
+  int value_count;
+
+  struct B *children[MAX_CHILDREN];
+  int children_count;
+
+  bool is_leaf;
 } B;
 
 int max(int a, int b) { return (a > b) ? a : b; }
 
-B *createNode(int value) {
+B *createNode(void) {
   B *node = (B *)malloc(sizeof(B));
-
-  node->value = value;
-  node->left = NULL;
-  node->right = NULL;
-
+  node->value_count = 0;
+  node->children_count = 0;
+  node->is_leaf = true;
+  for (int i = 0; i < MAX_CHILDREN; i++)
+    node->children[i] = NULL;
   return node;
 }
 
 void freeNode(B *node) {
   if (!node)
     return;
-  freeNode(node->left);
-  freeNode(node->right);
+  for (int i = 0; i < node->children_count; i++) {
+    freeNode(node->children[i]);
+  }
   free(node);
 }
 
 int getHeight(B *node) {
   if (!node)
     return 0;
-  return 1 + max(getHeight(node->left), getHeight(node->right));
+  if (node->is_leaf)
+    return 1;
+  return 1 + getHeight(node->children[0]);
 }
 
-int getBalance(B *node) {
-  if (!node)
-    return 0;
-  return getHeight(node->left) - getHeight(node->right);
+B *insertSplit(B *node, int value) {
+  // TODO
+
+  return node;
 }
 
-B *insertNode(B *node, int value) {
-  //
+B *insertValue(B *node, int value) {
+  // TODO
+
+  return node;
 }
 
-B *deleteNode(B *node, int value) {
-  //
+B *insertNode(B *root, int value) {
+  if (!root) {
+    root = createNode();
+    root->values[0] = value;
+    root->value_count = 1;
+    return root;
+  }
+
+  bool is_full = root->value_count == MAX_VALUES;
+
+  if (is_full) {
+    root = insertSplit(root, value);
+    return root;
+
+  } else {
+    root = insertValue(root, value);
+    return root;
+  }
 }
 
 B *search(B *node, int value) {
-  if (!node || node->value == value)
+  if (!node)
+    return NULL;
+  int i = 0;
+  while (i < node->value_count && value > node->values[i])
+    i++;
+  if (i < node->value_count && node->values[i] == value)
     return node;
-  if (value < node->value)
-    return search(node->left, value);
-  return search(node->right, value);
+  if (node->is_leaf)
+    return NULL;
+  return search(node->children[i], value);
 }
 
 void inorder(B *node) {
-  if (node) {
-    inorder(node->left);
-    printf("%d ", node->value);
-    inorder(node->right);
+  if (!node)
+    return;
+  for (int i = 0; i < node->value_count; i++) {
+    if (!node->is_leaf)
+      inorder(node->children[i]);
+    printf("%d ", node->values[i]);
+  }
+  if (!node->is_leaf)
+    inorder(node->children[node->value_count]);
+}
+
+void print_array(int a[], int a_len) {
+  printf("[");
+  for (int i = 0; i < a_len; i++) {
+    printf("%i", a[i]);
+    if (i < a_len - 1)
+      printf(", ");
+  }
+  printf("]\n");
+}
+
+void print_root(B *node) {
+  if (!node)
+    return;
+  print_array(node->values, node->value_count);
+}
+
+void print_children(B *node) {
+  if (!node)
+    return;
+  for (int i = 0; i < node->children_count; i++) {
+    printf("%d: ", i);
+    print_array(node->children[i]->values, node->children[i]->value_count);
   }
 }
 
@@ -82,21 +146,15 @@ int main(void) {
   inorder(root);
   printf("\n");
 
-  printf("Deleting nodes with value 20:\n");
-  root = deleteNode(root, 20);
+  printf("Root height: %d\n", getHeight(root));
+  printf("Root values:\n");
+  print_root(root);
+  printf("\n");
 
-  printf("Deleting nodes with value 10:\n");
-  root = deleteNode(root, 10);
-
-  printf("Deleting nodes with value 7:\n");
-  root = deleteNode(root, 7);
-
-  printf("Inorder traversal after deletion:\n");
-  inorder(root);
+  printf("Children values:\n");
+  print_children(root);
   printf("\n");
 
   freeNode(root);
   return 0;
 }
-
-// Konya
