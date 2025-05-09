@@ -48,17 +48,9 @@ print_char:
 
 
 // Testing putchar
+.extern putchar
 .global putchar
-putchar:
-  push {r1, r2, r7}   // save registers used in syscall
-  mov r7, #4          // syscall number for write
-  mov r1, sp
-  strb r0, [r1]
-  mov r0, #1          // file descriptor (stdout)
-  mov r2, #1          // number of bytes to write
-  svc 0               // syscall
-  pop {r1, r2, r7}    // Restore registers after syscall
-  bx lr
+// putchar from glibc
 
 exit:
   mov r0, #0         // exit code

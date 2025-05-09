@@ -76,6 +76,7 @@ print_char:
 
 
 // Testing putchar
+.extern putchar
 .global putchar
 // putchar from glibc
 
