@@ -19,6 +19,9 @@ typedef unsigned char cc_t;
 #define TIOCWINSZ 0x5413
 #define ISIG 0x0001
 
+#define RED "\033[31m"
+#define RESET "\033[0m"
+
 /*
 struct winsize {
         unsigned short 	ws_row;
@@ -166,6 +169,7 @@ void draw_player(int position, int side) {
 void draw_game() {
   for (int c = 0; c < game.cols; c++) {
     term_moveto(0, c);
+    puts(RED);
     puts("#");
     term_moveto(game.rows - 1, c);
     puts("#");
