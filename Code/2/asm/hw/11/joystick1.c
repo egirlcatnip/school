@@ -9,7 +9,6 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
-
 #define JOYSTICK_DEVID "Raspberry Pi Sense HAT Joystick"
 #define INPUT_DEV_PATH "/dev/input"
 
